@@ -6,7 +6,7 @@ interface IconProps extends SVGAttributes<SVGElement> {
   color?: string;
   size?: string | number;
 }
-type Icon = FunctionComponent<IconProps>;
+export type Icon = FunctionComponent<IconProps>;
 
 const BottomNavbar = () => {
   const menuList = new Map([

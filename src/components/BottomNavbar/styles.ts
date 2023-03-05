@@ -4,6 +4,8 @@ import styled from "@emotion/styled";
 export const Navbar = {
   Wrapper: styled.nav`
     flex: 1;
+    position: absolute;
+    bottom: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
