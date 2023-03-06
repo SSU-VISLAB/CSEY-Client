@@ -7,8 +7,9 @@ export interface IEventModalProps {
   title: string;
   imgURL?: string;
   startDate: string;
-  endDate: string;
+  endDate?: string;
   content: string;
+  dday: number;
 }
 
 const MainPage = () => {
@@ -19,6 +20,8 @@ const MainPage = () => {
         startDate={modalData.startDate}
         endDate={modalData.endDate}
         content={modalData.content}
+        imgURL={modalData.imgURL}
+        dday={modalData.dday}
       />
     </s.Wrapper>
   );
