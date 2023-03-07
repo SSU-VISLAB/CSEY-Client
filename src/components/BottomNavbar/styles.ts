@@ -5,6 +5,8 @@ export const Navbar = {
   Wrapper: styled.nav`
     flex: 1;
     display: flex;
+    position: absolute;
+    bottom: 0;
     justify-content: space-between;
     align-items: center;
     font-size: .9rem;
