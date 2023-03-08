@@ -1,1 +1,15 @@
+@font-face {
+	font-family: "바른히피";
+	src: url(/src/styles/바른히피.ttf);
+}
+:root {
+    --font-바른히피: "바른히피";
+	
+}
 
+*,
+*::before, 
+*::after {
+	margin: 0; 
+	padding: 0;
+}
