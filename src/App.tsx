@@ -4,7 +4,6 @@ import { AlarmArray, dataArray } from "./components/InnerListItem/menuList";
 import { AlarmSetting, Setting } from "./components/InnerListItem";
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
-import "./App.css";
 import EventModal from "./components/EventModal";
 import MainPage from "./pages/MainPage";
 
