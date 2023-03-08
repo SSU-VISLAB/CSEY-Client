@@ -1,6 +1,7 @@
 import React, { FunctionComponent, SVGAttributes } from "react";
 import { MobileNavbar, Navbar } from "./styles";
 import { Package, Mic, Home, Link, Smile } from "react-feather"; // for icon-test
+import IconButton from '@mui/material/IconButton';
 
 interface IconProps extends SVGAttributes<SVGElement> {
   color?: string;
@@ -16,7 +17,7 @@ const BottomNavbar = () => {
     ["링크트리", Link],
     ["MY", Smile],
   ]); // 제목, 아이콘
-  
+
   return (
     <MobileNavbar.Wrapper>
       <MobileNavbar.Items>
@@ -31,7 +32,7 @@ const BottomNavbar = () => {
 const NavbarItem = ({ title, Icon }: { title: string; Icon: Icon }) => {
   return (
     <MobileNavbar.Item>
-      <MobileNavbar.Icon>{<Icon />}</MobileNavbar.Icon>
+      <Icon />
       {title}
     </MobileNavbar.Item>
   );
