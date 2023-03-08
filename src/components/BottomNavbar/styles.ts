@@ -1,16 +1,12 @@
 import styled from "@emotion/styled";
+import Button from "@mui/material/Button";
 
 // pc용, 추후 조정
 export const Navbar = {
   Wrapper: styled.nav`
-    flex: 1;
-    display: flex;
     position: absolute;
     bottom: 0;
-    justify-content: space-between;
     align-items: center;
-    font-size: .9rem;
-    font-weight: 600;
     background-color: white;
 
     border-top: 2px solid #708dc3;
@@ -22,6 +18,8 @@ export const Navbar = {
     list-style: none;
   `,
   Item: styled.li`
+    font-size: 0.9rem;
+    font-weight: 600;
     cursor: pointer;
   `,
 };
@@ -29,19 +27,21 @@ export const Navbar = {
 // 모바일용
 export const MobileNavbar = {
   Wrapper: styled(Navbar.Wrapper)`
-    align-self: flex-end;
     width: 100vw;
   `,
   Items: styled(Navbar.Items)`
-    flex: 1;
-    display: flex;
     justify-content: space-around;
   `,
-  Item: styled(Navbar.Item)`
+  Item: styled(Button)`
+    cursor: pointer;
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin: 0.3rem 0;
+    padding: 0.3rem 0 0 0;
+    font-family: var(--font-바른히피);
+    font-size: 1rem;
+    font-weight: 600;
+    min-width: 32px;
+    width: 100%;
   `,
-  Icon: styled.span``,
 };
