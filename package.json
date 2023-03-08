@@ -12,15 +12,19 @@
     "@emotion/css": "^11.10.6",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "file-loader": "^6.2.0",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.12",
     "prettier": "^2.8.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-feather": "^2.0.10"
+    "react-feather": "^2.0.10",
+    "vite-plugin-svgr": "^2.4.0",
+    "vite-svg-loader": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",
+    "@svgr/webpack": "^6.5.1",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
