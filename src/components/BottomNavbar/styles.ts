@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
 import Button from "@mui/material/Button";
 
+type ActiveNav = {
+  active?: string;
+}
+
 // pc용, 추후 조정
 export const Navbar = {
   Wrapper: styled.nav`
@@ -33,6 +37,7 @@ export const MobileNavbar = {
     justify-content: space-around;
   `,
   Item: styled(Button)`
+    background-color: ${(props: ActiveNav) => props.active ? '#708dc3' : 'none'}!important;
     cursor: pointer;
     display: flex;
     align-items: center;

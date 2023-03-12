@@ -1,6 +1,6 @@
 import { SettingCard, SettingList } from "./styles";
 import { Icon } from "../BottomNavbar";
-import { Settings } from "react-feather";
+import { Settings, ArrowLeft } from "react-feather";
 
 export type SettingCardHeader = {
   icon?: Icon;
@@ -23,6 +23,7 @@ export type SettingCardData = {
   content?: SettingCardAlarm[];
 };
 
+/** My - 설정페이지 */
 const Setting = ({ dataArray }: { dataArray: SettingCardData[] }) => {
   return (
     <SettingList>
@@ -64,10 +65,14 @@ const ItemList = ({ header, content }: SettingCardData) => {
   );
 };
 
-const AlarmSetting = ({ dataArray }: { dataArray: SettingCardData[] }) => {
+/** My - 알림 설정 페이지 */
+const AlarmSetting = ({ dataArray, goBack }: { dataArray: SettingCardData[], goBack: () => void }) => {
   return (
     <SettingList>
       <SettingCard.ContentRow>
+        <SettingCard.Icon>
+          <ArrowLeft size={24} onClick={() => goBack()} />
+        </SettingCard.Icon>
         <SettingCard.Icon>
           <Settings size={24} />
         </SettingCard.Icon>
@@ -116,6 +121,7 @@ const AlarmItemList = ({ header, content }: SettingCardData) => {
   );
 };
 
+/** My - 공통 컴포넌트, {아이콘} {제목} 표시 */
 const ItemHeader = ({ title, icon, padding = true, bold }) => {
   const Icon = icon;
   return (
@@ -128,6 +134,7 @@ const ItemHeader = ({ title, icon, padding = true, bold }) => {
   );
 };
 
+/** 체크버튼 있는 단일 요소인 alarm설정 */
 const ContentCheck = ({ onClick, meta }: SettingCardAlarm) => {
   const sx = {
     "& .MuiSvgIcon-root": {
@@ -149,6 +156,7 @@ const ContentCheck = ({ onClick, meta }: SettingCardAlarm) => {
   );
 };
 
+/** 자식 요소인 alarm설정 */
 const ContentChild = ({ onClick, meta, description }: SettingCardAlarm) => {
   return (
     <SettingCard.ContentRow>
