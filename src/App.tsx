@@ -4,6 +4,8 @@ import { AlarmArray, dataArray } from "./components/InnerListItem/menuList";
 import { AlarmSetting, Setting } from "./components/InnerListItem";
 import { useState } from "react";
 import MainPage from "./pages/MainPage";
+import NoticePage from "./pages/NoticePage";
+import LinktreePage from "./pages/LinktreePage";
 import { Route, Routes } from "react-router-dom";
 
 function App() {
@@ -15,9 +17,9 @@ function App() {
     <Div>
         <Routes>
           <Route path="Terrace" element={<>테라스 페이지</>} />
-          <Route path="Notification" element={<>공지 페이지</>} />
+          <Route path="Notification" element={<NoticePage />} />
           <Route path="/Main" element={<MainPage />} />
-          <Route path="LinkTree" element={<>링크트리 페이지</>} />
+          <Route path="LinkTree" element={<LinktreePage/>} />
           <Route path="/My" element={settingPage ? <Setting dataArray={dataArray} /> : <AlarmSetting dataArray={AlarmArray} goBack={goBack} />} />
         </Routes>
       <BottomNavbar />

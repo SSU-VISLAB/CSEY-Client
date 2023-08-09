@@ -1,5 +1,6 @@
 import React from "react";
 import EventModal from "../../components/EventModal";
+import HeaderLogo from "../../components/HeaderLogo";
 import * as s from "./styles";
 import modalData from "../../tmp/modalData";
 
