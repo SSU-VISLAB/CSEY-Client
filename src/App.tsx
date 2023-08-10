@@ -1,12 +1,12 @@
 import BottomNavbar from "./components/BottomNavbar";
 import { Div } from "./AppStyles";
-import { AlarmArray, dataArray } from "./components/InnerListItem/menuList";
-import { AlarmSetting, Setting } from "./components/InnerListItem";
+import { AlarmSetting, Setting } from "./pages/MyPage";
 import { useState } from "react";
 import MainPage from "./pages/MainPage";
 import NoticePage from "./pages/NoticePage";
 import LinktreePage from "./pages/LinktreePage";
 import { Route, Routes } from "react-router-dom";
+import { AlarmArray, dataArray } from "./pages/MyPage/menuList";
 
 function App() {
   // MY페이지 테스트용

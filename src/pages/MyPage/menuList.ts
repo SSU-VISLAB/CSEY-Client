@@ -34,31 +34,31 @@ export const dataArray: SettingCardData[] = [
 export const AlarmArray: SettingCardData[] = [
   {
     header: { title: "전체 알림" },
-    content: [{ isCheck: true, meta: "전체 알림 끄기" }],
+    content: [{ hasCheck: true, meta: "전체 알림 끄기" }],
   },
   {
     header: { title: "행사 알림" },
     content: [
-      { isCheck: true, meta: "행사 알림 켜기", child: [
+      { hasCheck: true, meta: "행사 알림 켜기", child: [
           { meta: "알림 시간", description: "시작 24시간 전", onClick: () => alert("알림 시간 설정") },
           { meta: "알림 형태", description: "북마크만", onClick: () => alert("알림 형태 설정")},
         ],
       },
-      { isCheck: true, meta: "행사 등록 알림 켜기" }
+      { hasCheck: true, meta: "행사 등록 알림 켜기" }
     ],
   },
   {
     header: { title: '학사일정 알림' },
     content: [
-      { isCheck: true, meta: "일정 당일 알림 켜기" },
-      { isCheck: true, meta: "일정 등록 알림 켜기" },
+      { hasCheck: true, meta: "일정 당일 알림 켜기" },
+      { hasCheck: true, meta: "일정 등록 알림 켜기" },
     ]
   },
   {
     header: { title: '공지 알림'},
     content: [
-      { isCheck: true, meta: '일반 공지 알림 켜기'},
-      { isCheck: true, meta: '긴급 공지 알림 켜기'},
+      { hasCheck: true, meta: '일반 공지 알림 켜기'},
+      { hasCheck: true, meta: '긴급 공지 알림 켜기'},
     ]
   }
 ];

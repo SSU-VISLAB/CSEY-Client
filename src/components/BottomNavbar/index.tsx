@@ -1,7 +1,7 @@
 import React, { FunctionComponent, SVGAttributes } from "react";
 import { MobileNavbar, Navbar } from "./styles";
 import { Package, Mic, Home, Link, Smile } from "react-feather"; // for icon-test
-import { NavigateFunction, useMatch, useNavigate } from "react-router-dom";
+import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 
 interface IconProps extends SVGAttributes<SVGElement> {
   color?: string;
@@ -30,18 +30,17 @@ const BottomNavbar = () => {
     <MobileNavbar.Wrapper>
       <MobileNavbar.Items>
         {[...menuList.keys()].map((key, i) => {
-          const data = menuList.get(key);
-          return <NavbarItem title={key} Icon={data[0]} Link={data[1]} navigate={navigate} match={match} key={i} />;
+          const [Icon, Link] = menuList.get(key);
+          return <NavbarItem title={key} Icon={Icon} navigate={() => navigate(Link)} active={match(Link)} key={key} />;
         })}
       </MobileNavbar.Items>
     </MobileNavbar.Wrapper>
   );
 };
 
-const NavbarItem = ({ title, Icon, Link, navigate, match }: { title: string; Icon: Icon, Link: string, navigate: NavigateFunction, match }) => {
-  const active = match(Link);
+const NavbarItem = ({ title, Icon, navigate, active }: { title: string; Icon: Icon, navigate: () => void, active:PathMatch<string> }) => {
   return (
-    <MobileNavbar.Item onClick={() => navigate(Link)} active={active ? "active" : undefined}>
+    <MobileNavbar.Item onClick={navigate} active={active ? "active" : undefined}>
       <Icon />
       {title}
     </MobileNavbar.Item>
