@@ -83,6 +83,7 @@ const AlarmSetting = ({
 }) => {
   return (
     <SettingList>
+      <HeaderLogo/>
       <ContentRow>
         <Icon>
           <ArrowLeft size={24} onClick={() => goBack()} />
