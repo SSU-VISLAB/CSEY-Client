@@ -16,6 +16,7 @@ export interface IEventModalProps {
 const MainPage = () => {
   return (
     <s.Wrapper>
+      <HeaderLogo/>
       <EventModal
         title={modalData.title}
         startDate={modalData.startDate}

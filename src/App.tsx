@@ -7,6 +7,7 @@ import NoticePage from "./pages/NoticePage";
 import LinktreePage from "./pages/LinktreePage";
 import { Route, Routes } from "react-router-dom";
 import { AlarmArray, dataArray } from "./pages/MyPage/menuList";
+import TerracePage from "./pages/TerracePage";
 
 function App() {
   // MY페이지 테스트용
@@ -16,7 +17,7 @@ function App() {
   return (
     <Div>
         <Routes>
-          <Route path="Terrace" element={<>테라스 페이지</>} />
+          <Route path="Terrace" element={<TerracePage/>} />
           <Route path="Notification" element={<NoticePage />} />
           <Route path="/Main" element={<MainPage />} />
           <Route path="LinkTree" element={<LinktreePage/>} />

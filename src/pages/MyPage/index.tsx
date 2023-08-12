@@ -14,6 +14,7 @@ import {
 } from "./styles";
 import * as BottomNav from "../../components/BottomNavbar";
 import { Settings, ArrowLeft } from "react-feather";
+import HeaderLogo from "../../components/HeaderLogo";
 
 export type SettingCardHeader = {
   icon?: BottomNav.Icon;
@@ -40,6 +41,7 @@ export type SettingCardData = {
 const Setting = ({ dataArray }: { dataArray: SettingCardData[] }) => {
   return (
     <SettingList>
+      <HeaderLogo/>
       {dataArray.map((data, i) => (
         <ItemList
           key={i}

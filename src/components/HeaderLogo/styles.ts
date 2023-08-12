@@ -17,12 +17,12 @@ export const Wrapper = styled.div`
 
 export const CseyLogo = styled.img`
   width: auto;
-  height: 100px;
+  height: 80px;
   cursor: pointer;
 `;
 
 export const VisLogo = styled.img`
-  width: 100px;
+  width: 80px;
   position: absolute;
   bottom: 0;
   right: 0;
