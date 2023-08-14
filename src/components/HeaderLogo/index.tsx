@@ -15,6 +15,7 @@ const HeaderLogo = () => {
           <s.VisLogo src={VisLogo} alt="VISlab Logo" />
         </a>
       </s.Wrapper>
+      <s.BlueLine />
     </s.HeaderWrapper>
   );
 };
