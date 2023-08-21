@@ -61,14 +61,28 @@ const NoticePage = () => {
             Alert
           </s.Title>
         </s.Header>
-        {AlertData.map((data, i) => (
-          <AlertList key={i} time={data.time} description={data.description} />
-        ))}
+        {AlertData.length === 0 ? (
+          <s.ContentGroup>
+            <s.ContentRow>
+              <s.Content centered backgroundColor>
+                <s.Meta bold>지금은 긴급공지가 없습니다.</s.Meta>
+              </s.Content>
+            </s.ContentRow>
+          </s.ContentGroup>
+        ) : (
+          AlertData.map((data, i) => (
+            <AlertList
+              key={i}
+              time={data.time}
+              description={data.description}
+            />
+          ))
+        )}
       </s.Group>
 
       <s.Group elevation={4} backgroundColor>
         <s.Header>
-          <s.Icon src={NoticeSrc} alt="Alert" />
+          <s.Icon src={NoticeSrc} alt="Notice" />
           <s.Title padding bold>
             Notice
           </s.Title>
@@ -110,20 +124,22 @@ const NoticeList = ({
 }: NoticeCardContents) => {
   return (
     <s.ContentGroup>
-      <s.ContentRow>
-        <s.Content>
-          <div>
+      <s.NoticeContent>
+        <s.NoticeGroup>
+          <s.Line>
             <s.Meta bold>{title}</s.Meta>
-          </div>
-          {/* {description && <s.Description>{description}</s.Description>} */}
-          {/* {imgSrc && <img src={imgSrc} alt={title} />} */}
-          <div>
-            <s.Time>
-              {time}
-            </s.Time>
-          </div>
-        </s.Content>
-      </s.ContentRow>
+          </s.Line>
+          {description && (
+            <s.Line>
+              <s.Description>{description}</s.Description>
+            </s.Line>
+          )}
+          <s.Line>
+            <s.Time>{time}</s.Time>
+          </s.Line>
+        </s.NoticeGroup>
+        {imgSrc && <s.NoticeSrc src={imgSrc} alt={title}></s.NoticeSrc>}
+      </s.NoticeContent>
     </s.ContentGroup>
   );
 };
