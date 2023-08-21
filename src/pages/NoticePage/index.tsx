@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import * as BottomNav from "../../components/BottomNavbar";
 import HeaderLogo from "../../components/HeaderLogo";
 import * as s from "./styles";
-import AlertSrc from "../../assets/Img/AlertIcon.png";
-import NoticeSrc from "../../assets/Img/NoticeIcon.png";
+import AlertSrc from "../../assets/Icons/AlertIcon.png";
+import NoticeSrc from "../../assets/Icons/NoticeIcon.png";
 import testSrc from "../../assets/Img/testImg.png";
 export interface AlertCardHeader {
   icon?: BottomNav.Icon;
