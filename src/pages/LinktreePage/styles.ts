@@ -31,6 +31,7 @@ const AlertCard = {
     margin: 1.5vh 0;
     background-color: #feebb6;
     border-radius: 0.3em;
+    padding-bottom: 10px;
   `,
 
   Icon: styled.img`
