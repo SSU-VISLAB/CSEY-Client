@@ -2,8 +2,13 @@
 	font-family: "바른히피";
 	src: url(/src/styles/바른히피.ttf);
 }
+@font-face {
+	font-family: "NotoSans";
+	src: url(/src/styles/NotoSansKR.ttf);
+}
 :root {
     --font-바른히피: "바른히피";
+	--font-NotoSans: "NotoSans";
 }
 
 *,
