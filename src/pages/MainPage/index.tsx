@@ -5,7 +5,8 @@ import * as s from "./styles";
 import modalData from "../../tmp/modalData";
 import axios from "axios";
 import AlertSrc from "../../assets/Icons/MainAlertIcon.png";
-import {Calendar} from "./calendar";
+import { Calendar } from "./calendar";
+import { Link } from "react-router-dom";
 
 export interface IEventModalProps {
   title: string;
@@ -21,14 +22,48 @@ interface AlertResponse {
   content: string;
   image: string;
   date: string;
-  major_advisor: "COMPUTER" | "SOFTWARE";
+  major_advisor: string;
   like: number;
   dislike: number;
-  priority: "EMERGENCY" | "GENERAL";
+  priority: string;
 }
 
+// const alerts = [
+//   {
+//     id: 23,
+//     title: "23-2학기 전체수강신청 공지 안내",
+//     content: "안녕하세요 학부사무실입니다.\n23-2학기 전체 수강신청...",
+//     image: "https://123456789",
+//     date: "2023-08-27T12:34:56Z",
+//     major_advisor: "COMPUTER",
+//     like: 101,
+//     dislike: 10,
+//     priority: "EMERGENCY",
+//   },
+//   {
+//     id: 24,
+//     title: "2023-2학기 수강신청 유의사항 안내",
+//     content: "소프트웨어학부 수강신청 공지사항 및 참고 사항 안내\n\n...",
+//     image: "https://1234587899",
+//     date: "2023-08-30T13:25:05Z",
+//     major_advisor: "SOFTWARE",
+//     like: 87,
+//     dislike: 8,
+//     priority: "EMERGENCY",
+//   },
+// ];
 const MainPage = () => {
   const [alerts, setAlerts] = useState<AlertResponse[]>([]);
+  const [showRedDot, setShowRedDot] = useState<boolean>(true);
+  const [currentAlertIndex, setCurrentAlertIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentAlertIndex((prevIndex) => (prevIndex + 1) % alerts.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   const [alertError, setAlertError] = useState<string | null>(null);
   const [ip, setIp] = useState<string>("");
 
@@ -43,7 +78,6 @@ const MainPage = () => {
       .catch((error) => {
         console.log("Error fetching IP", error);
       });
-    
     axios
       .get<AlertResponse[]>(url)
       .then((response) => {
@@ -51,7 +85,7 @@ const MainPage = () => {
       })
       .catch((err) => {
         console.error("Error fetching alert data:", err);
-        setAlertError("지금은 긴급 공지가 없습니다.");
+        setAlertError("오늘은 중요 공지가 없습니다.");
       });
   }, []);
 
@@ -61,34 +95,36 @@ const MainPage = () => {
       <s.Group>
         <s.Header>
           <s.Icon src={AlertSrc} alt="Alert" />
-          {alertError ? (
+          {/* {alertError ? ( */}
+          {true ? (
             <s.Meta bold>{alertError}</s.Meta>
           ) : (
-            alerts.map((alert, i) => (
-              <AlertList
-                key={i}
-                id={alert.id}
-                title={alert.title}
-                content={alert.content}
-                image={alert.image}
-                date={alert.date}
-                major_advisor={alert.major_advisor}
-                like={alert.like}
-                dislike={alert.dislike}
-                priority={alert.priority}
-              />
-            ))
+            <AlertList
+              id={alerts[currentAlertIndex].id}
+              title={alerts[currentAlertIndex].title}
+              content={alerts[currentAlertIndex].content}
+              image={alerts[currentAlertIndex].image}
+              date={alerts[currentAlertIndex].date}
+              major_advisor={alerts[currentAlertIndex].major_advisor}
+              like={alerts[currentAlertIndex].like}
+              dislike={alerts[currentAlertIndex].dislike}
+              priority={alerts[currentAlertIndex].priority}
+            />
           )}
+          <Link to="/Notification">
+            <s.More>
+              {" "}
+              {showRedDot && <s.Activate />} {"더보기 >"}
+            </s.More>
+          </Link>
         </s.Header>
       </s.Group>
-      <Calendar/>
+      <Calendar />
     </s.MainList>
   );
 };
 
 const AlertList = ({ title }: AlertResponse) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return <s.Meta bold>{title}</s.Meta>;
 };
 export default MainPage;

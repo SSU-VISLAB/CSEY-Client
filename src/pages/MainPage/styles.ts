@@ -24,6 +24,10 @@ type GroupProps = {
   between?: boolean;
 };
 
+type SlideProps = {
+  index: number;
+};
+
 const AlertCard = {
   //전체 카드
   Group: styled(Paper)<GroupProps>`
@@ -43,6 +47,15 @@ const AlertCard = {
     display: flex;
     padding: 0.2em 0;
     align-items: center;
+    position: relative;
+  `,
+  Activate: styled.span`
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background-color: red;
+    border-radius: 50%;
+    margin-right: 3px;
   `,
 
   //텍스트 관련 스타일
@@ -63,6 +76,18 @@ const AlertCard = {
     white-space: nowrap;
     max-width: 90%;
   `,
+  More: styled.span`
+    font-size: 1.5vh;
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
+    cursor: pointer;
+    color: black;
+  `,
+  SlideAnimation: styled.div<SlideProps>`
+    transition: all 1s;
+    transform: translateY(-${(props) => props.index * 100}%);
+  `,
 };
 
 export const {
@@ -71,4 +96,7 @@ export const {
   Icon,
   Meta,
   Title,
+  More,
+  Activate,
+  SlideAnimation,
 } = AlertCard;

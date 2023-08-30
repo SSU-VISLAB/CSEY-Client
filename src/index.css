@@ -6,9 +6,14 @@
 	font-family: "NotoSans";
 	src: url(/src/styles/NotoSansKR.ttf);
 }
+@font-face {
+	font-family: "SCDream7";
+	src: url(/src/styles/SCDream7.otf);
+}
 :root {
     --font-바른히피: "바른히피";
 	--font-NotoSans: "NotoSans";
+	--font-SCDream7: "SCDream7";
 }
 
 *,
