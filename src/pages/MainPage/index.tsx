@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
-import EventModal from "../../components/EventModal";
-import HeaderLogo from "../../components/HeaderLogo";
-import * as s from "./styles";
-import modalData from "../../tmp/modalData";
-import axios from "axios";
-import AlertSrc from "../../assets/Icons/MainAlertIcon.png";
-import { Calendar } from "./calendar";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import AlertSrc from "../../assets/Icons/MainAlertIcon.png";
+import HeaderLogo from "../../components/HeaderLogo";
 import { RCalendar } from "./Rcalendar";
+import * as s from "./styles";
 
 export interface IEventModalProps {
   title: string;
@@ -71,23 +67,23 @@ const MainPage = () => {
   const port = "";
   const url = `https://${ip}:${port}/posts/alerts`;
   useEffect(() => {
-    axios
-      .get("https://api.ipify.org?format=json")
-      .then((response) => {
-        setIp(response.data.ip);
-      })
-      .catch((error) => {
-        console.log("Error fetching IP", error);
-      });
-    axios
-      .get<AlertResponse[]>(url)
-      .then((response) => {
-        setAlerts(response.data);
-      })
-      .catch((err) => {
-        console.error("Error fetching alert data:", err);
-        setAlertError("오늘은 중요 공지가 없습니다.");
-      });
+    // axios
+    //   .get("https://api.ipify.org?format=json")
+    //   .then((response) => {
+    //     setIp(response.data.ip);
+    //   })
+    //   .catch((error) => {
+    //     console.log("Error fetching IP", error);
+    //   });
+    // axios
+    //   .get<AlertResponse[]>(url)
+    //   .then((response) => {
+    //     setAlerts(response.data);
+    //   })
+    //   .catch((err) => {
+    //     console.error("Error fetching alert data:", err);
+    //     setAlertError("오늘은 중요 공지가 없습니다.");
+    //   });
   }, []);
 
   return (

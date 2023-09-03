@@ -40,8 +40,9 @@ export const CalendarContainer = styled.div`
 `;
 
 export const Image = styled.img`
-  width: 100%;
+  position: absolute;
   opacity: 0.28; //투명도 28%
+  pointer-events: none; // 마우스 이벤트 통과
 `;
 
 export const CalendarOverlay = styled.div`
