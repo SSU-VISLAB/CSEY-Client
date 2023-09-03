@@ -7,6 +7,7 @@ import axios from "axios";
 import AlertSrc from "../../assets/Icons/MainAlertIcon.png";
 import { Calendar } from "./calendar";
 import { Link } from "react-router-dom";
+import { RCalendar } from "./Rcalendar";
 
 export interface IEventModalProps {
   title: string;
@@ -119,7 +120,8 @@ const MainPage = () => {
           </Link>
         </s.Header>
       </s.Group>
-      <Calendar />
+      <RCalendar />
+      {/* <Calendar></Calendar> */}
     </s.MainList>
   );
 };
