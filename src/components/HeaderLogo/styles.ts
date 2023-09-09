@@ -27,4 +27,11 @@ export const VisLogo = styled.img`
   bottom: 0;
   right: 0;
   cursor: pointer;
+  margin-bottom: 10px;
+`;
+
+export const BlueLine = styled.div`
+  width: 100%;
+  height: 3px;
+  background-color: #90A9D4; /* 파란색으로 설정 */
 `;
