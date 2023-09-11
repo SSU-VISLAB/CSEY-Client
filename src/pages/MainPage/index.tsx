@@ -4,6 +4,9 @@ import AlertSrc from "../../assets/Icons/MainAlertIcon.png";
 import HeaderLogo from "../../components/HeaderLogo";
 import { RCalendar } from "./Rcalendar";
 import * as s from "./styles";
+import { Calendar } from "react-feather";
+import { EventCardCarousel } from "./cstyles";
+import EventCard from "./EventCard";
 
 export interface IEventModalProps {
   title: string;
@@ -23,6 +26,13 @@ interface AlertResponse {
   like: number;
   dislike: number;
   priority: string;
+}
+export interface IEventCardProps {
+  date: string;
+  image: string;
+  major: string;
+  title: string;
+  isBookmarked: boolean;
 }
 
 // const alerts = [
@@ -116,6 +126,17 @@ const MainPage = () => {
           </Link>
         </s.Header>
       </s.Group>
+      <EventCardCarousel>
+        {alerts.map((alert) => (
+          <EventCard
+            date={alert.date}
+            image={alert.image}
+            major={alert.major_advisor}
+            title={alert.title}
+            isBookmarked={false}
+          />
+        ))}
+      </EventCardCarousel>
       <RCalendar />
       {/* <Calendar></Calendar> */}
     </s.MainList>

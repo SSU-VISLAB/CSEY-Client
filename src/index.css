@@ -10,10 +10,15 @@
 	font-family: "SCDream7";
 	src: url(/src/styles/SCDream7.otf);
 }
+@font-face {
+	font-family: "넥슨Lv1고딕";
+	src: url(/src/styles/넥슨Lv1고딕.otf);
+}
 :root {
     --font-바른히피: "바른히피";
 	--font-NotoSans: "NotoSans";
 	--font-SCDream7: "SCDream7";
+	--font-넥슨Lv1고딕: "넥슨Lv1고딕";
 }
 
 *,
