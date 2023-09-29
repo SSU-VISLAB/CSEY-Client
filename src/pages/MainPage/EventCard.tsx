@@ -25,7 +25,7 @@ const EventCard = ({
   const WrapperColor = leftDate <= 1 ? true : false;
   return (
     <s.EventCardWrapper elevation={8} bgColor={WrapperColor}>
-      <s.EventDday bgColor={WrapperColor}>{date}</s.EventDday>
+      <s.EventDday bgColor={WrapperColor}>D{leftDate}</s.EventDday>
       <s.EventCardContants>
         <s.EventPost src={image} />
         <s.BelowEventPost>

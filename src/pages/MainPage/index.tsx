@@ -7,6 +7,8 @@ import * as s from "./styles";
 import { Calendar } from "react-feather";
 import { EventCardCarousel } from "./cstyles";
 import EventCard from "./EventCard";
+import testImg1 from "/src/assets/tmp/좋아하는것들을.png";
+import testImg2 from "/src/assets/tmp/짱구.jpeg";
 
 export interface IEventModalProps {
   title: string;
@@ -35,32 +37,32 @@ export interface IEventCardProps {
   isBookmarked: boolean;
 }
 
-// const alerts = [
-//   {
-//     id: 23,
-//     title: "23-2학기 전체수강신청 공지 안내",
-//     content: "안녕하세요 학부사무실입니다.\n23-2학기 전체 수강신청...",
-//     image: "https://123456789",
-//     date: "2023-08-27T12:34:56Z",
-//     major_advisor: "COMPUTER",
-//     like: 101,
-//     dislike: 10,
-//     priority: "EMERGENCY",
-//   },
-//   {
-//     id: 24,
-//     title: "2023-2학기 수강신청 유의사항 안내",
-//     content: "소프트웨어학부 수강신청 공지사항 및 참고 사항 안내\n\n...",
-//     image: "https://1234587899",
-//     date: "2023-08-30T13:25:05Z",
-//     major_advisor: "SOFTWARE",
-//     like: 87,
-//     dislike: 8,
-//     priority: "EMERGENCY",
-//   },
-// ];
+const alerts = [
+  {
+    id: 23,
+    title: "23-2학기 전체수강신청 공지 안내",
+    content: "안녕하세요 학부사무실입니다.\n23-2학기 전체 수강신청...",
+    image: testImg1,
+    date: "2023-08-27T12:34:56Z",
+    major_advisor: "COMPUTER",
+    like: 101,
+    dislike: 10,
+    priority: "EMERGENCY",
+  },
+  {
+    id: 24,
+    title: "2023-2학기 수강신청 유의사항 안내",
+    content: "소프트웨어학부 수강신청 공지사항 및 참고 사항 안내\n\n...",
+    image: testImg2,
+    date: "2023-08-30T13:25:05Z",
+    major_advisor: "SOFTWARE",
+    like: 87,
+    dislike: 8,
+    priority: "EMERGENCY",
+  },
+];
 const MainPage = () => {
-  const [alerts, setAlerts] = useState<AlertResponse[]>([]);
+  // const [alerts, setAlerts] = useState<AlertResponse[]>([]);
   const [showRedDot, setShowRedDot] = useState<boolean>(true);
   const [currentAlertIndex, setCurrentAlertIndex] = useState(0);
 
@@ -138,7 +140,6 @@ const MainPage = () => {
         ))}
       </EventCardCarousel>
       <RCalendar />
-      {/* <Calendar></Calendar> */}
     </s.MainList>
   );
 };

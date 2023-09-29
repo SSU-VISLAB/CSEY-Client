@@ -27,15 +27,17 @@ export const EventDday = styled.div<{bgColor: boolean}>`
   z-index: 999;
   position: absolute;
 
+  padding-right: 1vh;
+  padding-bottom: 0.6vh;
+
   display: flex;
   justify-content: center;
   align-items: center;
-
-  /* width: 50px;
-  height: 26px; */
-  border-radius: 10px;
+  border-radius: 1vh;
   margin-top: 1vh;
   font-size: 3vh;
+
+  transform: translateY(-1vh);
 `;
 
 export const EventCardContants = styled.div`
