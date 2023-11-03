@@ -1,13 +1,12 @@
+import { Tooltip } from '@mui/material';
 import { memo, useEffect, useRef, useState } from 'react';
 import Calendar from 'react-calendar';
-import * as s from "./cstyles";
 import './Calendar.css';
-import moment from 'moment';
+import * as s from "./cstyles";
 import { CalendarStick } from './styles';
-import { Tooltip } from '@mui/material';
 
 function getMonthName(date: Date) {
-	const monthNumber = date.getMonth();
+  const monthNumber = date.getMonth();
   if (monthNumber >= 0 && monthNumber <= 11) {
     return monthNames[monthNumber];
   } else {
@@ -35,35 +34,37 @@ function getRowCount(currentDate: Date) {
 }
 
 export const RCalendar = memo(function RCalendar() {
-	const [currentDate, setCurrentMonth] = useState(new Date());
-  const [calenderPosition, setCalenderPosition] = useState<[number, number ,number]>([0,0,0]);
-  const calRef = useRef();
-  useEffect(() => {
-    setTimeout(() => { // offset 값은 늦게 반영되기 때문에 한 tick 늦게 실행시켜 해결
-      const {offsetTop, offsetWidth, offsetHeight} = document.querySelector<HTMLDivElement>('.react-calendar__month-view');
-      setCalenderPosition([offsetTop, offsetWidth, offsetHeight]);
-    });
-  }, [currentDate]);
+  const [currentDate, setCurrentMonth] = useState(new Date());
+  const calRef = useRef<HTMLDivElement>();
+
+  console.log("rerender");
 
   useEffect(() => {
-    const calendarTile = document.querySelectorAll<HTMLButtonElement>(".react-calendar__tile");
-    calendarTile.forEach(el => el.style.height = `${100 / getRowCount(currentDate)}%`)
+    setTimeout(() => setCurrentMonth((prev) => new Date(prev)), 150);
+    console.log('change calRef')
   }, [calRef]);
+
+  useEffect(() => {
+    const calendarTile = calRef.current.querySelectorAll<HTMLButtonElement>(".react-calendar__tile");
+    const height = 100 / getRowCount(currentDate);
+    calendarTile.forEach(el => el.style.height = `${height}%`)
+  }, [currentDate]);
+
+  /** TODO: 투명도 적용한 image로 교체, css에서 .react-calendar__month-view의 backImg로 설정 */
   return (
     <div>
-      {/* <BackgroundImage month={currentMonth} position={calenderPosition} /> */}
+      <BackgroundImage month={currentDate?.getMonth()} calendarRef={calRef.current} />
       <Calendar
         inputRef={calRef}
-				formatDay={(_, date) => date.getDate().toString()}
-				formatShortWeekday={(_, date)=> getDayOfWeek(date)}
-				formatMonthYear={(_, date) => getMonthName(date)}
-				onActiveStartDateChange={(v) => setCurrentMonth(v.activeStartDate)} // 달 넘기기 버튼 클릭 이벤트
-				calendarType='gregory' // 시작일을 일요일로 설정
+        formatDay={(_, date) => date.getDate().toString()}
+        formatShortWeekday={(_, date) => getDayOfWeek(date)}
+        formatMonthYear={(_, date) => getMonthName(date)}
+        onActiveStartDateChange={(v) => setCurrentMonth(v.activeStartDate)} // 달 넘기기 버튼 클릭 이벤트
+        calendarType='gregory' // 시작일을 일요일로 설정
         maxDetail={'month'} // month만 볼 수 있도록 강제
         minDetail={'month'} // 위와 동일
         showNeighboringMonth={false} // 이웃한 달의 날짜 표시 안함
         tileContent={tileContent}
-        onClickDay={(v, e) => {e.preventDefault()}}
         tileDisabled={(v) => true}
       />
     </div>
@@ -80,7 +81,7 @@ function isBetween(currentDate: Date, startDate: Date, endDate: Date) {
 /** 달력 막대 */
 function tileContent({ date, view }) {
   const stickData = dummyCalendarEvent.reduce((acc, val) => {
-    const {start, end} = val;
+    const { start, end } = val;
     if (isBetween(date, start, end)) acc.push(val);
     return acc;
   }, []).slice(0, 3);
@@ -88,12 +89,10 @@ function tileContent({ date, view }) {
 
   return (
     <>
-      {stickData.map((d, i) => 
-        <>
-          <Tooltip title={d.content} followCursor={true} placement="top">
-            <CalendarStick key={d.title}></CalendarStick>
-          </Tooltip>
-        </>
+      {stickData.map((d, i) =>
+        <Tooltip key={d.title} title={d.content} followCursor={true} placement="top">
+          <CalendarStick></CalendarStick>
+        </Tooltip>
       )}
     </>
   )
@@ -145,11 +144,14 @@ const monthImages = [
   "/src/assets/calendar/012.png",
 ];
 
-function BackgroundImage({month, position}: {month: number, position: [number, number, number]}) {
+function BackgroundImage({ month, calendarRef }: { month: number, calendarRef: any }) {
   const src = monthImages[month];
   const alt = monthNames[month];
-  const [top, width, height] = position.map(v => v + 'px');
+  const positionRef = calendarRef?.querySelector('.react-calendar__month-view');
+  if (!positionRef) return <></>;
+  const { offsetTop, offsetWidth, offsetHeight } = positionRef;
+  const [top, width, height] = [offsetTop, offsetWidth, offsetHeight].map(v => v + 'px');
   return (
-    <s.Image src={src} alt={alt} style={{top, width, height}}/>
+    <s.Image src={src} alt={alt} style={{ top, width, height }} />
   )
 }

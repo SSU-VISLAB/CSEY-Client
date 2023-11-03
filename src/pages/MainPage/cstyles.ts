@@ -41,7 +41,7 @@ export const CalendarContainer = styled.div`
 
 export const Image = styled.img`
   position: absolute;
-  opacity: 0.28; //투명도 28%
+  opacity: 0.2; //투명도 28%
   pointer-events: none; // 마우스 이벤트 통과
 `;
 
@@ -74,10 +74,10 @@ export const Week = styled.div<dayProps>`
     props.color
       ? props.color
       : props.children === "Sun"
-      ? "red"
-      : props.children === "Sat"
-      ? "blue"
-      : "black"};
+        ? "red"
+        : props.children === "Sat"
+          ? "blue"
+          : "black"};
   font-family: var(--font-SCDream7);
   border: 1px solid #ccc;
   font-size: 5px;
