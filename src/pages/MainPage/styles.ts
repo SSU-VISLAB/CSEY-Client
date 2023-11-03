@@ -100,3 +100,13 @@ export const {
   Activate,
   SlideAnimation,
 } = AlertCard;
+
+export const CalendarStick = styled.div`
+  height: .75vh;
+  border-radius: 5px;
+  margin-bottom: 2px;
+  :hover {
+    background-color: aquamarine;
+  }
+  background-color: lightblue;
+`

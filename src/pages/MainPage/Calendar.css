@@ -68,6 +68,11 @@ abbr[title] {
   background-color: #e6e6e6;
 }
 
+.react-calendar__month-view__days {
+  height: 35vh;
+  max-height: 37vh;
+}
+
 /* 요일(SUN ~ SAT) 칸 */
 .react-calendar__month-view__weekdays {
   border-top: 1px solid gray;
@@ -88,16 +93,25 @@ abbr[title] {
 
 /* 날짜(1~30|31) 칸 */
 .react-calendar__tile {
-  max-width: 100%;
-  padding: 1vh 6.6667px 4vh;
+  padding: 1vh .75vw 0;
   background: none;
-  vertical-align: top;
   line-height: 16px;
   border-radius: 10px;
+  flex-direction: column;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+.react-calendar__tile abbr {
+  text-align: start;
+  line-height: 14px;
+  margin-left: 3px;
+  margin-bottom: 3px;
+  font-size: smaller;
 }
 
 .react-calendar__tile:disabled {
-  background-color: #f0f0f0;
+  color: black;
 }
 
 .react-calendar__tile:enabled:hover,
@@ -106,7 +120,7 @@ abbr[title] {
 }
 
 .react-calendar__tile--now {
-  border: 2px solid orange !important;
+  border: 1px solid orange !important;
 }
 
 .react-calendar__tile--now:enabled:hover,
@@ -123,7 +137,7 @@ abbr[title] {
   background: #a9d4ff;
 }
 
-.react-calendar__tile--active {
+/* .react-calendar__tile--active {
   background: #006edc;
   color: white;
 }
@@ -131,7 +145,7 @@ abbr[title] {
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
   background: #1087ff;
-}
+} */
 
 .react-calendar--selectRange .react-calendar__tile--hover {
   background-color: #e6e6e6;
