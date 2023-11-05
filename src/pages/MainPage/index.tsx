@@ -9,6 +9,7 @@ import { EventCardCarousel } from "./cstyles";
 import EventCard from "./EventCard";
 import testImg1 from "/src/assets/tmp/좋아하는것들을.png";
 import testImg2 from "/src/assets/tmp/짱구.jpeg";
+import { Button } from "@mui/material";
 
 export interface IEventModalProps {
   title: string;
@@ -64,6 +65,7 @@ const alerts = [
 const MainPage = () => {
   // const [alerts, setAlerts] = useState<AlertResponse[]>([]);
   const [showRedDot, setShowRedDot] = useState<boolean>(true);
+  const [calendarState, setcalendarState] = useState('normal');
   const [currentAlertIndex, setCurrentAlertIndex] = useState(0);
 
   useEffect(() => {
@@ -101,45 +103,49 @@ const MainPage = () => {
   return (
     <s.MainList>
       <HeaderLogo />
-      <s.Group>
-        <s.Header>
-          <s.Icon src={AlertSrc} alt="Alert" />
-          {/* {alertError ? ( */}
-          {true ? (
-            <s.Meta bold>{alertError}</s.Meta>
-          ) : (
-            <AlertList
-              id={alerts[currentAlertIndex].id}
-              title={alerts[currentAlertIndex].title}
-              content={alerts[currentAlertIndex].content}
-              image={alerts[currentAlertIndex].image}
-              date={alerts[currentAlertIndex].date}
-              major_advisor={alerts[currentAlertIndex].major_advisor}
-              like={alerts[currentAlertIndex].like}
-              dislike={alerts[currentAlertIndex].dislike}
-              priority={alerts[currentAlertIndex].priority}
+      {calendarState == 'expand' && <s.ExpandButton onClick={() => setcalendarState('normal')}>V</s.ExpandButton>}
+      <s.NoticeListArea isHidden={calendarState == 'expand'}>
+        <s.Group>
+          <s.Header>
+            <s.Icon src={AlertSrc} alt="Alert" />
+            {/* {alertError ? ( */}
+            {true ? (
+              <s.Meta bold>{alertError}</s.Meta>
+            ) : (
+              <AlertList
+                id={alerts[currentAlertIndex].id}
+                title={alerts[currentAlertIndex].title}
+                content={alerts[currentAlertIndex].content}
+                image={alerts[currentAlertIndex].image}
+                date={alerts[currentAlertIndex].date}
+                major_advisor={alerts[currentAlertIndex].major_advisor}
+                like={alerts[currentAlertIndex].like}
+                dislike={alerts[currentAlertIndex].dislike}
+                priority={alerts[currentAlertIndex].priority}
+              />
+            )}
+            <Link to="/Notification">
+              <s.More>
+                {" "}
+                {showRedDot && <s.Activate />} {"더보기 >"}
+              </s.More>
+            </Link>
+          </s.Header>
+        </s.Group>
+        <EventCardCarousel>
+          {alerts.map((alert) => (
+            <EventCard
+              date={alert.date}
+              image={alert.image}
+              major={alert.major_advisor}
+              title={alert.title}
+              isBookmarked={false}
             />
-          )}
-          <Link to="/Notification">
-            <s.More>
-              {" "}
-              {showRedDot && <s.Activate />} {"더보기 >"}
-            </s.More>
-          </Link>
-        </s.Header>
-      </s.Group>
-      <EventCardCarousel>
-        {alerts.map((alert) => (
-          <EventCard
-            date={alert.date}
-            image={alert.image}
-            major={alert.major_advisor}
-            title={alert.title}
-            isBookmarked={false}
-          />
-        ))}
-      </EventCardCarousel>
-      <RCalendar />
+          ))}
+        </EventCardCarousel>
+      </s.NoticeListArea>
+      <RCalendar state={calendarState} />
+      {calendarState == 'normal' && <s.ExpandButton onClick={() => setcalendarState('expand')}>^</s.ExpandButton>}
     </s.MainList>
   );
 };

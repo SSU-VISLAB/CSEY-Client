@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Paper } from "@mui/material";
+import { Button, Paper } from "@mui/material";
 
 export const MainList = styled.div`
   width: 95vw;
@@ -11,6 +11,22 @@ export const Banner = styled.img`
   height: 20vw;
   margin: 0 auto;
 `;
+
+export const ExpandButton = styled(Button)`
+  margin: 0 auto;
+  display: block;
+`;
+
+export const NoticeListArea = styled.div`
+  opacity: ${(props: Area) => props.isHidden ? '0' : '1'};
+  visibility: ${props => props.isHidden ? 'hidden' : 'visible'};
+  max-height: ${props => props.isHidden ? '0' : '1000px'};
+  transition: max-height 0.3s ease, opacity 0.5s ease;
+`;
+
+type Area = {
+  isHidden: boolean;
+}
 
 type text = {
   padding?: boolean;
@@ -101,8 +117,12 @@ export const {
   SlideAnimation,
 } = AlertCard;
 
+type Stick = {
+  expand: boolean
+}
+
 export const CalendarStick = styled.div`
-  height: .75vh;
+  height: ${(props: Stick) => props.expand ? '1.5vh' : '.75vh'};
   border-radius: 5px;
   margin-bottom: 2px;
   :hover {

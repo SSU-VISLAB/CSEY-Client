@@ -5,43 +5,21 @@ import './Calendar.css';
 import * as s from "./cstyles";
 import { CalendarStick } from './styles';
 
-function getMonthName(date: Date) {
-  const monthNumber = date.getMonth();
-  if (monthNumber >= 0 && monthNumber <= 11) {
-    return monthNames[monthNumber];
-  } else {
-    return "Invalid Month"; // 0에서 11 사이가 아닌 값에 대한 처리
-  }
-}
-function getDayOfWeek(date: Date) {
-  const dayIndex = date.getDay(); // 0(일요일)부터 6(토요일)까지의 인덱스를 반환합니다.
-  return daysOfWeek[dayIndex];
-}
-
-function getRowCount(currentDate: Date) {
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
-  const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-  const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0); // 0은 이전 월의 마지막 날을 의미
-
-  const daysInMonth = lastDayOfMonth.getDate();
-  const firstDayOfWeek = firstDayOfMonth.getDay(); // 0 (일요일)부터 6 (토요일)까지
-
-  // 7일(한 주)을 기준으로 행 수 계산
-  const rowCount = Math.ceil((daysInMonth + firstDayOfWeek) / 7);
-
-  return rowCount;
-}
-
-export const RCalendar = memo(function RCalendar() {
+export const RCalendar = memo(function RCalendar({state}: {state: string}) {
   const [currentDate, setCurrentMonth] = useState(new Date());
   const calRef = useRef<HTMLDivElement>();
-
+  const isExpand = state == 'expand';
   console.log("rerender");
 
   useEffect(() => {
-    setTimeout(() => setCurrentMonth((prev) => new Date(prev)), 150);
-    console.log('change calRef')
+    const calendar = calRef?.current?.querySelector<HTMLButtonElement>(".react-calendar__month-view__days");
+    if (calendar) {
+      calendar.classList[isExpand ? 'add' : 'remove']('expand');
+    }
+  }, [state])
+
+  useEffect(() => {
+    setCurrentMonth((prev) => new Date(prev));
   }, [calRef]);
 
   useEffect(() => {
@@ -50,10 +28,30 @@ export const RCalendar = memo(function RCalendar() {
     calendarTile.forEach(el => el.style.height = `${height}%`)
   }, [currentDate]);
 
+  /** 달력 막대 */
+  function tileContent({ date, view }) {
+    const stickData = dummyCalendarEvent.reduce((acc, val) => {
+      const { start, end } = val;
+      if (isBetween(date, start, end)) acc.push(val);
+      return acc;
+    }, []).slice(0, 3);
+    // 3개 이상 표시되지 않도록 제한
+
+    return (
+      <>
+        {stickData.map((d, i) =>
+          <Tooltip key={d.title} title={d.content} followCursor={true} placement="top">
+            <CalendarStick expand={isExpand}>{isExpand && d.title}</CalendarStick>
+          </Tooltip>
+        )}
+      </>
+    )
+  }
+
   /** TODO: 투명도 적용한 image로 교체, css에서 .react-calendar__month-view의 backImg로 설정 */
   return (
     <div>
-      <BackgroundImage month={currentDate?.getMonth()} calendarRef={calRef.current} />
+      {/* <BackgroundImage month={currentDate?.getMonth()} calendarRef={calRef.current} /> */}
       <Calendar
         inputRef={calRef}
         formatDay={(_, date) => date.getDate().toString()}
@@ -70,33 +68,6 @@ export const RCalendar = memo(function RCalendar() {
     </div>
   );
 })
-
-function isBetween(currentDate: Date, startDate: Date, endDate: Date) {
-  // currentDate는 00:00:00, startDate는 xx:yy:zz 이므로 >=의 계산 결과가 99.9% false로 나오게 됨
-  // ex) currentDate(15일00시00분00초) < startDate(15일09시00분00초), 즉 15일에 시작하는 일정이 15일에 표시되지 않음
-  // 이를 해결하기 위해 startDate를 00시00분00초로 하여 새로 만듦
-  return currentDate >= new Date(startDate.toLocaleDateString()) && currentDate <= endDate;
-}
-
-/** 달력 막대 */
-function tileContent({ date, view }) {
-  const stickData = dummyCalendarEvent.reduce((acc, val) => {
-    const { start, end } = val;
-    if (isBetween(date, start, end)) acc.push(val);
-    return acc;
-  }, []).slice(0, 3);
-  // 3개 이상 표시되지 않도록 제한
-
-  return (
-    <>
-      {stickData.map((d, i) =>
-        <Tooltip key={d.title} title={d.content} followCursor={true} placement="top">
-          <CalendarStick></CalendarStick>
-        </Tooltip>
-      )}
-    </>
-  )
-}
 
 function makeData([start, end]: [Date, Date], title: string, content: string) {
   return {
@@ -154,4 +125,39 @@ function BackgroundImage({ month, calendarRef }: { month: number, calendarRef: a
   return (
     <s.Image src={src} alt={alt} style={{ top, width, height }} />
   )
+}
+
+function isBetween(currentDate: Date, startDate: Date, endDate: Date) {
+  // currentDate는 00:00:00, startDate는 xx:yy:zz 이므로 >=의 계산 결과가 99.9% false로 나오게 됨
+  // ex) currentDate(15일00시00분00초) < startDate(15일09시00분00초), 즉 15일에 시작하는 일정이 15일에 표시되지 않음
+  // 이를 해결하기 위해 startDate를 00시00분00초로 하여 새로 만듦
+  return currentDate >= new Date(startDate.toLocaleDateString()) && currentDate <= endDate;
+}
+
+function getMonthName(date: Date) {
+  const monthNumber = date.getMonth();
+  if (monthNumber >= 0 && monthNumber <= 11) {
+    return monthNames[monthNumber];
+  } else {
+    return "Invalid Month";
+  }
+}
+function getDayOfWeek(date: Date) {
+  const dayIndex = date.getDay();
+  return daysOfWeek[dayIndex];
+}
+
+function getRowCount(currentDate: Date) {
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+  const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0); // 0은 이전 월의 마지막 날을 의미
+
+  const daysInMonth = lastDayOfMonth.getDate();
+  const firstDayOfWeek = firstDayOfMonth.getDay(); // 0 (일요일)부터 6 (토요일)까지
+
+  // 7일(한 주)을 기준으로 행 수 계산
+  const rowCount = Math.ceil((daysInMonth + firstDayOfWeek) / 7);
+
+  return rowCount;
 }
