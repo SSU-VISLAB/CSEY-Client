@@ -1,12 +1,14 @@
 import { Tooltip } from '@mui/material';
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import Calendar from 'react-calendar';
 import './Calendar.css';
 import * as s from "./cstyles";
 import { CalendarStick } from './styles';
+import { EventDetail } from './EventDetail/EventDetail';
 
 export const RCalendar = memo(function RCalendar({state}: {state: string}) {
   const [currentDate, setCurrentMonth] = useState(new Date());
+  const [clickedDate, setClickedDate] = useState(currentDate);
   const calRef = useRef<HTMLDivElement>();
   const isExpand = state == 'expand';
   console.log("rerender");
@@ -15,12 +17,11 @@ export const RCalendar = memo(function RCalendar({state}: {state: string}) {
     const calendar = calRef?.current?.querySelector<HTMLButtonElement>(".react-calendar__month-view__days");
     if (calendar) {
       calendar.classList[isExpand ? 'add' : 'remove']('expand');
+      (calendar.children[clickedDate.getDate() - 1] as HTMLElement).focus();
     }
   }, [state])
 
-  useEffect(() => {
-    setCurrentMonth((prev) => new Date(prev));
-  }, [calRef]);
+
 
   useEffect(() => {
     const calendarTile = calRef.current.querySelectorAll<HTMLButtonElement>(".react-calendar__tile");
@@ -29,24 +30,19 @@ export const RCalendar = memo(function RCalendar({state}: {state: string}) {
   }, [currentDate]);
 
   /** 달력 막대 */
-  function tileContent({ date, view }) {
-    const stickData = dummyCalendarEvent.reduce((acc, val) => {
-      const { start, end } = val;
-      if (isBetween(date, start, end)) acc.push(val);
-      return acc;
-    }, []).slice(0, 3);
+  const tileContent = useMemo(() => ({ date, view }) => {
     // 3개 이상 표시되지 않도록 제한
-
+    const stickData = getEventOfCurrentDate(dummyCalendarEvent, date).slice(0, 3);
     return (
       <>
         {stickData.map((d, i) =>
-          <Tooltip key={d.title} title={d.content} followCursor={true} placement="top">
-            <CalendarStick expand={isExpand}>{isExpand && d.title}</CalendarStick>
+          <Tooltip key={d.title} title={d.content} placement="top">
+            <CalendarStick expand={false}>{false && d.title}</CalendarStick>
           </Tooltip>
         )}
       </>
     )
-  }
+  }, [state]);
 
   /** TODO: 투명도 적용한 image로 교체, css에서 .react-calendar__month-view의 backImg로 설정 */
   return (
@@ -63,8 +59,10 @@ export const RCalendar = memo(function RCalendar({state}: {state: string}) {
         minDetail={'month'} // 위와 동일
         showNeighboringMonth={false} // 이웃한 달의 날짜 표시 안함
         tileContent={tileContent}
-        tileDisabled={(v) => true}
+        onClickDay={(date, event) => setClickedDate(date)}
+        // tileClassName={} // tile에 class 부여하는 함수
       />
+      {isExpand && <EventDetail date={clickedDate} events={getEventOfCurrentDate(dummyCalendarEvent, clickedDate)} />}
     </div>
   );
 })
@@ -160,4 +158,12 @@ function getRowCount(currentDate: Date) {
   const rowCount = Math.ceil((daysInMonth + firstDayOfWeek) / 7);
 
   return rowCount;
+}
+
+function getEventOfCurrentDate(events: ReturnType<typeof makeData>[], currentDate: Date) {
+  return events.reduce((acc, val) => {
+    const { start, end } = val;
+    if (isBetween(currentDate, start, end)) acc.push(val);
+    return acc;
+  }, []);
 }
