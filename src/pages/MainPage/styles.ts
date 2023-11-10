@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Button, Paper } from "@mui/material";
 
 export const MainList = styled.div`
-  width: 95vw;
+  width: 95%;
   padding: 0 2.5vw;
 `;
 
@@ -23,6 +23,30 @@ export const NoticeListArea = styled.div`
   max-height: ${props => props.isHidden ? '0' : '1000px'};
   transition: max-height 0.3s ease, opacity 0.5s ease;
 `;
+
+type Stick = {
+  expand: boolean
+}
+
+export const StickWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  height: .75vh;
+  min-height: 0.75vh;
+  max-height: 0.75vh;
+`
+
+export const CalendarStick = styled.div`
+  /* height: ${(props: Stick) => props.expand ? '1.5vh' : '.75vh'}; */
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  pointer-events: all!important;
+  :hover {
+    background-color: aquamarine;
+  }
+  background-color: lightblue;
+`
 
 type Area = {
   isHidden: boolean;
@@ -46,7 +70,7 @@ type SlideProps = {
 
 const AlertCard = {
   //전체 카드
-  Group: styled(Paper)<GroupProps>`
+  Group: styled(Paper) <GroupProps>`
     margin: 1.5vh 0;
     background-color: #e0e0e0;
     border-radius: 0.3em;
@@ -116,17 +140,3 @@ export const {
   Activate,
   SlideAnimation,
 } = AlertCard;
-
-type Stick = {
-  expand: boolean
-}
-
-export const CalendarStick = styled.div`
-  height: ${(props: Stick) => props.expand ? '1.5vh' : '.75vh'};
-  border-radius: 5px;
-  margin-bottom: 2px;
-  :hover {
-    background-color: aquamarine;
-  }
-  background-color: lightblue;
-`

@@ -32,7 +32,7 @@ const EventDetail = {
         padding-left: .5vw;
     `,
     Cylinder: styled.div`
-        background: silver;
+        background: lightblue;
         height: 2.5vh;
         width: .5vw;
         border-radius: 20px;
@@ -41,7 +41,7 @@ const EventDetail = {
         font-size: 1.75vh;
     `,
     ContentPeriod: styled.div`
-        height: 40%;        
+        height: 40%;
     `,
     PeriodText: styled.div`
         font-size: 1.5vh;

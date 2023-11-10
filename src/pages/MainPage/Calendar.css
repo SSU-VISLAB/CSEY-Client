@@ -12,6 +12,10 @@ abbr[title] {
   text-decoration: none;
 }
 
+.unpointable {
+  pointer-events: none !important;
+}
+
 .react-calendar,
 .react-calendar *,
 .react-calendar *:before,
@@ -47,6 +51,7 @@ abbr[title] {
   font-size: max(6vw, 4vh);
   color: lightgray;
 }
+
 .react-calendar__navigation__label {
   transform: translateY(-2px);
   font-size: max(3vw, 2vh);
@@ -81,8 +86,9 @@ abbr[title] {
   font-weight: bold;
   font-size: 0.75em;
 }
+
 /* 요일 칸 첫 요소(SUN) */
-.react-calendar__month-view__weekdays > :first-child {
+.react-calendar__month-view__weekdays> :first-child {
   color: red;
 }
 
@@ -92,15 +98,17 @@ abbr[title] {
 
 /* 날짜(1~30|31) 칸 */
 .react-calendar__tile {
-  padding: 1vh .75vw 0;
+  padding: 1vh 0;
   background: none;
   line-height: 16px;
   border-radius: 10px;
   flex-direction: column;
+  overflow: visible !important;
   display: flex;
   align-items: stretch;
-  justify-content: flex-start;
+  gap: 6px
 }
+
 .react-calendar__tile abbr {
   text-align: start;
   line-height: 14px;

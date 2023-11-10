@@ -1,12 +1,14 @@
 import { Tooltip } from '@mui/material';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import Calendar from 'react-calendar';
+import { TileArgs } from 'react-calendar/dist/cjs/shared/types';
+import ClockIcon from '../../components/Clock';
 import './Calendar.css';
-import * as s from "./cstyles";
-import { CalendarStick } from './styles';
 import { EventDetail } from './EventDetail/EventDetail';
+import * as s from "./cstyles";
+import { CalendarStick, StickWrapper } from './styles';
 
-export const RCalendar = memo(function RCalendar({state}: {state: string}) {
+export const RCalendar = memo(function RCalendar({ state }: { state: string }) {
   const [currentDate, setCurrentMonth] = useState(new Date());
   const [clickedDate, setClickedDate] = useState(currentDate);
   const calRef = useRef<HTMLDivElement>();
@@ -30,15 +32,26 @@ export const RCalendar = memo(function RCalendar({state}: {state: string}) {
   }, [currentDate]);
 
   /** 달력 막대 */
-  const tileContent = useMemo(() => ({ date, view }) => {
+  const tileContent = useMemo(() => ({ date: _date, view }: TileArgs) => {
     // 3개 이상 표시되지 않도록 제한
-    const stickData = getEventOfCurrentDate(dummyCalendarEvent, date).slice(0, 3);
+    const stickData = getEventOfCurrentDate(dummyCalendarEvent, _date).slice(0, 3);
+    const date = _date.getDate();
+    const clockSize = 12;
     return (
       <>
-        {stickData.map((d, i) =>
-          <Tooltip key={d.title} title={d.content} placement="top">
-            <CalendarStick expand={false}>{false && d.title}</CalendarStick>
-          </Tooltip>
+        {stickData.map((d, i) => {
+          const isStartDate = date == d.start.getDate();
+          const isEndDate = date == d.end.getDate();
+          return (
+            <Tooltip arrow key={d.title} title={d.content} placement="top" classes={{ popper: 'unpointable' }}>
+              <StickWrapper>
+                {isStartDate && <ClockIcon date={d.start} size={clockSize} start />}
+                <CalendarStick expand={false}>{false && d.title}</CalendarStick>
+                {isEndDate && <ClockIcon date={d.end} size={clockSize} end />}
+              </StickWrapper>
+            </Tooltip>
+          )
+        }
         )}
       </>
     )
@@ -60,7 +73,7 @@ export const RCalendar = memo(function RCalendar({state}: {state: string}) {
         showNeighboringMonth={false} // 이웃한 달의 날짜 표시 안함
         tileContent={tileContent}
         onClickDay={(date, event) => setClickedDate(date)}
-        // tileClassName={} // tile에 class 부여하는 함수
+      // tileClassName={} // tile에 class 부여하는 함수
       />
       {isExpand && <EventDetail date={clickedDate} events={getEventOfCurrentDate(dummyCalendarEvent, clickedDate)} />}
     </div>
@@ -76,11 +89,11 @@ function makeData([start, end]: [Date, Date], title: string, content: string) {
   }
 }
 const dummyCalendarEvent = [
-  makeData([new Date('2023-10-30'), new Date('2023-11-08T00:00:00')], '제목1', '내용1'),
-  makeData([new Date('2023-11-01'), new Date('2023-11-04T00:00:00')], '제목2', '내용2'),
-  makeData([new Date('2023-11-05'), new Date('2023-11-08T00:00:00')], '제목3', '내용3'),
-  makeData([new Date('2023-11-20'), new Date('2023-11-28T00:00:00')], '제목4', '내용4'),
-  makeData([new Date('2023-11-15'), new Date('2023-11-15T00:00:00')], '제목5', '내용5'),
+  makeData([new Date('2023-10-30'), new Date('2023-11-08T09:00:00')], '제목1', '내용1'),
+  makeData([new Date('2023-11-01'), new Date('2023-11-04T15:00:00')], '제목2', '내용2'),
+  makeData([new Date('2023-11-05'), new Date('2023-11-08T11:00:00')], '제목3', '내용3'),
+  makeData([new Date('2023-11-20'), new Date('2023-11-28T15:00:00')], '제목4', '내용4'),
+  makeData([new Date('2023-11-15'), new Date('2023-11-15T18:00:00')], '제목5', '내용5'),
 ]
 
 const monthNames = [
@@ -165,5 +178,5 @@ function getEventOfCurrentDate(events: ReturnType<typeof makeData>[], currentDat
     const { start, end } = val;
     if (isBetween(currentDate, start, end)) acc.push(val);
     return acc;
-  }, []);
+  }, [] as typeof events);
 }
