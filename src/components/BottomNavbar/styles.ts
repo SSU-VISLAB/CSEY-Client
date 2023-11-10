@@ -8,7 +8,7 @@ type ActiveNav = {
 // pc용, 추후 조정
 export const Navbar = {
   Wrapper: styled.nav`
-    position: absolute;
+    position: sticky;
     bottom: 0;
     align-items: center;
     background-color: white;
@@ -20,6 +20,7 @@ export const Navbar = {
   Items: styled.ul`
     display: flex;
     list-style: none;
+    width: 100%;
   `,
   Item: styled.li`
     font-size: 0.9rem;
@@ -31,7 +32,7 @@ export const Navbar = {
 // 모바일용
 export const MobileNavbar = {
   Wrapper: styled(Navbar.Wrapper)`
-    width: 100vw;
+    width: 100%;
   `,
   Items: styled(Navbar.Items)`
     justify-content: space-around;
