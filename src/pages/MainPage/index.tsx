@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AlertSrc from "../../assets/Icons/MainAlertIcon.png";
 import HeaderLogo from "../../components/HeaderLogo";
+import { RCalendar } from "./Calendar";
 import EventCard from "./EventCard";
-import { RCalendar } from "./Rcalendar";
-import { EventCardCarousel } from "./cstyles";
+import { EventCardCarousel } from "./EventCard/styles";
 import * as s from "./styles";
 import testImg1 from "/src/assets/tmp/좋아하는것들을.png";
 import testImg2 from "/src/assets/tmp/짱구.jpeg";
@@ -133,6 +133,7 @@ const MainPage = () => {
         <EventCardCarousel>
           {alerts.map((alert) => (
             <EventCard
+              key={alert.id}
               date={alert.date}
               image={alert.image}
               major={alert.major_advisor}

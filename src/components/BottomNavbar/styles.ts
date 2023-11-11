@@ -8,11 +8,10 @@ type ActiveNav = {
 // pc용, 추후 조정
 export const Navbar = {
   Wrapper: styled.nav`
-    position: sticky;
+    position: fixed;
     bottom: 0;
     align-items: center;
     background-color: white;
-
     border-top: 2px solid #708dc3;
     box-shadow: 1px 1px 3px gray;
     color: #708dc3;

@@ -5,4 +5,5 @@ export const Div = styled.div`
   font-family: var(--font-바른히피);
   max-width: 1280px;
   margin: 0 auto;
+  height: 100vh;
 `;

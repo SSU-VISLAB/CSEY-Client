@@ -2,18 +2,20 @@ import { Tooltip } from '@mui/material';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import Calendar from 'react-calendar';
 import { TileArgs } from 'react-calendar/dist/cjs/shared/types';
-import ClockIcon from '../../components/Clock';
+import ClockIcon from '../../../components/Clock';
+import { EventDetail } from '../CalendarEventDetail';
+import { CalendarStick, StickWrapper } from '../styles';
 import './Calendar.css';
-import { EventDetail } from './EventDetail/EventDetail';
-import * as s from "./cstyles";
-import { CalendarStick, StickWrapper } from './styles';
+import { Image } from './styles';
 
 export const RCalendar = memo(function RCalendar({ state }: { state: string }) {
   const [currentDate, setCurrentMonth] = useState(new Date());
   const [clickedDate, setClickedDate] = useState(currentDate);
+  const [fullScreen, setFullScreen] = useState(false);
+
   const calRef = useRef<HTMLDivElement>();
   const isExpand = state == 'expand';
-  console.log("rerender");
+  const events = getEventOfCurrentDate(dummyCalendarEvent, clickedDate);
 
   useEffect(() => {
     const calendar = calRef?.current?.querySelector<HTMLButtonElement>(".react-calendar__month-view__days");
@@ -21,9 +23,19 @@ export const RCalendar = memo(function RCalendar({ state }: { state: string }) {
       calendar.classList[isExpand ? 'add' : 'remove']('expand');
       (calendar.children[clickedDate.getDate() - 1] as HTMLElement).focus();
     }
+    // 달력+상세 뷰로 돌아갈 때 달력 높이 초기화
+    if (!isExpand) {
+      setFullScreen(false);
+    }
   }, [state])
 
-
+  useEffect(() => {
+    const calendar = calRef?.current?.querySelector<HTMLButtonElement>(".react-calendar__month-view__days");
+    if (calendar) {
+      calendar.classList[fullScreen ? 'add' : 'remove']('full-screen');
+      (calendar.children[clickedDate.getDate() - 1] as HTMLElement).focus();
+    }
+  }, [fullScreen])
 
   useEffect(() => {
     const calendarTile = calRef.current.querySelectorAll<HTMLButtonElement>(".react-calendar__tile");
@@ -32,10 +44,10 @@ export const RCalendar = memo(function RCalendar({ state }: { state: string }) {
   }, [currentDate]);
 
   /** 달력 막대 */
-  const tileContent = useMemo(() => ({ date: _date, view }: TileArgs) => {
+  const tileContent = useMemo(() => ({ date: tileDate, view }: TileArgs) => {
     // 3개 이상 표시되지 않도록 제한
-    const stickData = getEventOfCurrentDate(dummyCalendarEvent, _date).slice(0, 3);
-    const date = _date.getDate();
+    const stickData = getEventOfCurrentDate(dummyCalendarEvent, tileDate).slice(0, 3);
+    const date = tileDate.getDate();
     const clockSize = 12;
     return (
       <>
@@ -51,8 +63,7 @@ export const RCalendar = memo(function RCalendar({ state }: { state: string }) {
               </StickWrapper>
             </Tooltip>
           )
-        }
-        )}
+        })}
       </>
     )
   }, [state]);
@@ -75,7 +86,7 @@ export const RCalendar = memo(function RCalendar({ state }: { state: string }) {
         onClickDay={(date, event) => setClickedDate(date)}
       // tileClassName={} // tile에 class 부여하는 함수
       />
-      {isExpand && <EventDetail date={clickedDate} events={getEventOfCurrentDate(dummyCalendarEvent, clickedDate)} />}
+      {isExpand && <EventDetail date={clickedDate} events={events} fullScreen={fullScreen} setFullScreen={setFullScreen} />}
     </div>
   );
 })
@@ -134,7 +145,7 @@ function BackgroundImage({ month, calendarRef }: { month: number, calendarRef: a
   const { offsetTop, offsetWidth, offsetHeight } = positionRef;
   const [top, width, height] = [offsetTop, offsetWidth, offsetHeight].map(v => v + 'px');
   return (
-    <s.Image src={src} alt={alt} style={{ top, width, height }} />
+    <Image src={src} alt={alt} style={{ top, width, height }} />
   )
 }
 

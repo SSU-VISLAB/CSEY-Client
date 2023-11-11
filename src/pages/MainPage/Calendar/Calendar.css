@@ -75,6 +75,12 @@ abbr[title] {
 
 .react-calendar__month-view__days {
   height: 35vh;
+  transition: height 0.3s ease;
+}
+
+.react-calendar__month-view__days.full-screen {
+  height: 70vh;
+  transition: height 0.3s ease;
 }
 
 /* 요일(SUN ~ SAT) 칸 */

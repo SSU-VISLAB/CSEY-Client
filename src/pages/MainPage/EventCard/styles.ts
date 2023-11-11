@@ -11,10 +11,10 @@ import { Paper } from "@mui/material";
 //   border-radius: 10px;
 // `;
 
-export const EventCardWrapper = styled(Paper)<{bgColor: boolean}>`
+export const EventCardWrapper = styled(Paper) <{ bgcolor: 'true' | 'false' }>`
   padding: 0.2em 0.5em 0 0.5em;
   margin: 1.5vh 0;
-  background-color: ${props => props.bgColor ? "#FEEBB6" : "#CEE6FF"};
+  background-color: ${props => props.bgcolor == 'true' ? "#FEEBB6" : "#CEE6FF"};
   border-radius: 0.3em;
   display: flex;
   width: 157px;
@@ -22,8 +22,13 @@ export const EventCardWrapper = styled(Paper)<{bgColor: boolean}>`
   margin-right: 1rem;
 `;
 
-export const EventDday = styled.div<{bgColor: boolean}>`
-  background-color: ${props => props.bgColor ? "#FEEBB6" : "#CEE6FF"};
+export const EventCardCarousel = styled.div`
+  display: flex;
+  align-items: column;
+`;
+
+export const EventDday = styled.div<{ bgcolor: 'true' | 'false' }>`
+  background-color: ${props => props.bgcolor == 'true' ? "#FEEBB6" : "#CEE6FF"};
   z-index: 999;
   position: absolute;
 

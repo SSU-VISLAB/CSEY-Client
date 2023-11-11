@@ -3,7 +3,9 @@ import { Button, Paper } from "@mui/material";
 
 export const MainList = styled.div`
   width: 95%;
-  padding: 0 2.5vw;
+  height: inherit;
+  padding: 0 2.5%;
+  overflow: hidden;
 `;
 
 export const Banner = styled.img`
@@ -21,7 +23,7 @@ export const NoticeListArea = styled.div`
   opacity: ${(props: Area) => props.isHidden ? '0' : '1'};
   visibility: ${props => props.isHidden ? 'hidden' : 'visible'};
   max-height: ${props => props.isHidden ? '0' : '1000px'};
-  transition: max-height 0.3s ease, opacity 0.5s ease;
+  transition: max-height 0.4s ease, opacity 0.6s ease;
 `;
 
 type Stick = {
