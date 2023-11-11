@@ -17,6 +17,7 @@ export const RCalendar = memo(function RCalendar({ state }: { state: string }) {
   const isExpand = state == 'expand';
   const events = getEventOfCurrentDate(dummyCalendarEvent, clickedDate);
 
+  /** 달력+상세 뷰로 전환 */
   useEffect(() => {
     const calendar = calRef?.current?.querySelector<HTMLButtonElement>(".react-calendar__month-view__days");
     if (calendar) {
@@ -29,6 +30,7 @@ export const RCalendar = memo(function RCalendar({ state }: { state: string }) {
     }
   }, [state])
 
+  /** 달력 전체화면으로 전환 */
   useEffect(() => {
     const calendar = calRef?.current?.querySelector<HTMLButtonElement>(".react-calendar__month-view__days");
     if (calendar) {
@@ -37,6 +39,7 @@ export const RCalendar = memo(function RCalendar({ state }: { state: string }) {
     }
   }, [fullScreen])
 
+  /** 월 변경 시 tile 행 개수에 따라 height 조정 */
   useEffect(() => {
     const calendarTile = calRef.current.querySelectorAll<HTMLButtonElement>(".react-calendar__tile");
     const height = 100 / getRowCount(currentDate);
@@ -66,7 +69,7 @@ export const RCalendar = memo(function RCalendar({ state }: { state: string }) {
         })}
       </>
     )
-  }, [state]);
+  }, []);
 
   /** TODO: 투명도 적용한 image로 교체, css에서 .react-calendar__month-view의 backImg로 설정 */
   return (
