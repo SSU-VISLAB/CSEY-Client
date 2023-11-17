@@ -1,3 +1,8 @@
+import { useQueryClient } from "@tanstack/react-query";
+import { ArrowLeft, Settings } from "react-feather";
+import * as BottomNav from "../../components/BottomNavbar";
+import HeaderLogo from "../../components/HeaderLogo";
+import { Login } from "../../components/Login";
 import {
   Arrow,
   CheckboxIcon,
@@ -9,12 +14,9 @@ import {
   Header,
   Icon,
   Meta,
-  Title,
   SettingList,
+  Title,
 } from "./styles";
-import * as BottomNav from "../../components/BottomNavbar";
-import { Settings, ArrowLeft } from "react-feather";
-import HeaderLogo from "../../components/HeaderLogo";
 
 export type SettingCardHeader = {
   icon?: BottomNav.Icon;
@@ -35,29 +37,35 @@ export interface SettingCardAlarm extends SettingCardContents {
 export type SettingCardData = {
   header: SettingCardHeader;
   content?: SettingCardAlarm[];
+  hasLogin?: boolean;
 };
 
 /** My - 설정페이지 */
 const Setting = ({ dataArray }: { dataArray: SettingCardData[] }) => {
+  const client = useQueryClient();
+  const user = client.getQueryData(["login"]) as any;
+  if (user) dataArray[0].header.title = user.name;
   return (
     <SettingList>
-      <HeaderLogo/>
+      <HeaderLogo />
       {dataArray.map((data, i) => (
         <ItemList
           key={i}
           header={data.header}
           content={data?.content}
-        ></ItemList>
+          hasLogin={!i}
+        />
       ))}
-    </SettingList>
+    </SettingList >
   );
 };
 
-const ItemList = ({ header, content }: SettingCardData) => {
+const ItemList = ({ header, content, hasLogin }: SettingCardData) => {
   return (
     <Group elevation={4}>
       <ItemHeader title={header.title} HeaderIcon={header.icon} bold />
-      {!content || (
+      {hasLogin && <Login />}
+      {content && (
         <ContentGroup>
           {content.map((v, i) => (
             <ContentRow key={i}>
@@ -83,7 +91,7 @@ const AlarmSetting = ({
 }) => {
   return (
     <SettingList>
-      <HeaderLogo/>
+      <HeaderLogo />
       <ContentRow>
         <Icon>
           <ArrowLeft size={24} onClick={() => goBack()} />
@@ -195,4 +203,5 @@ const ContentChild = ({ onClick, meta, description }: SettingCardAlarm) => {
   );
 };
 
-export { Setting, AlarmSetting };
+export { AlarmSetting, Setting };
+

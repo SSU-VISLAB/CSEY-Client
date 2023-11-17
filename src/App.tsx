@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Div } from "./AppStyles";
+import { useLoginQuery } from "./apis/user";
+import { kakaoLogout } from "./axios/user";
 import BottomNavbar from "./components/BottomNavbar";
 import { Login } from "./components/Login";
 import LinktreePage from "./pages/LinktreePage";
@@ -15,6 +17,9 @@ function App() {
   const [settingPage, setSettingPage] = useState(true);
   const goBack = () => setSettingPage(!settingPage);
   dataArray[2].content[1].onClick = goBack;
+  dataArray[1].content[1].onClick = () => kakaoLogout();
+
+  useLoginQuery();
   return (
     <Div>
       <Routes>
