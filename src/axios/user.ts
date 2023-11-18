@@ -1,11 +1,14 @@
+import { QueryClient } from "@tanstack/react-query";
 import axios from "axios";
-type loginResponse = {
+import { NavigateFunction } from "react-router";
+export type loginResponse = {
   accessToken: string;
   refreshToken: string;
   name: string;
-  new_kakao_access_token: string;
-  new_kakao_refresh_token: string;
-  new_expires_in: number;
+  id: number;
+  new_kakao_access_token?: string;
+  new_kakao_refresh_token?: string;
+  new_expires_in?: number;
 }
 
 export function login() {
@@ -21,7 +24,7 @@ export function login() {
   ).then(res => res.data as loginResponse);
 }
 
-export const kakaoLogout = async () => {
+export const kakaoLogout = async (client: QueryClient, navigate: NavigateFunction) => {
   console.log('logout called');
   return axios.post('/api/logout', {
     kakao_accessToken: localStorage.getItem('kakao_accessToken')
@@ -30,5 +33,12 @@ export const kakaoLogout = async () => {
     localStorage.removeItem('kakao_accessToken');
     localStorage.removeItem('kakao_refreshToken');
     localStorage.removeItem('kakao_expires_in');
+    client.removeQueries({ queryKey: ['login'] });
+    navigate('/My');
   });
+}
+
+export const getUserInfo = async (id: number) => {
+  console.log('getUserInfo called');
+  return axios.get(`/api/users/${id}`).then(res => res.data);
 }

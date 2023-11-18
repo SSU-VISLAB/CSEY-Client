@@ -1,5 +1,4 @@
 import { login } from "../axios/user";
+import { getUserInfo, kakaoLogout } from './user';
 
-export default {
-  login
-}
+export { getUserInfo, kakaoLogout, login };
