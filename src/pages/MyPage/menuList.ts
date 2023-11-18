@@ -1,7 +1,7 @@
 import { Settings, User } from "react-feather";
-import { SettingCardData } from ".";
+import { AlarmSettingCardContents, SettingCardContents, SettingCardData } from ".";
 
-export const dataArray: SettingCardData[] = [
+export const dataArray: SettingCardData<SettingCardContents>[] = [
   { header: { title: "나최고", icon: User } },
   {
     header: { title: "Account", icon: Settings },
@@ -26,12 +26,12 @@ export const dataArray: SettingCardData[] = [
       { meta: "개발자 정보" },
       { meta: "서비스 이용 약관" },
       { meta: "개인정보 처리방침" },
-      { meta: "오픈소스 라이선스" },
+      { meta: "오픈소스 라이센스" },
     ],
   },
 ];
 
-export const AlarmArray: SettingCardData[] = [
+export const AlarmArray: SettingCardData<AlarmSettingCardContents>[] = [
   {
     header: { title: "전체 알림" },
     content: [{ hasCheck: true, meta: "전체 알림 끄기" }],

@@ -1,8 +1,12 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Settings } from "react-feather";
+import { useMemo } from "react";
+import { ArrowLeft, Settings, User } from "react-feather";
+import { useNavigate } from "react-router-dom";
+import { kakaoLogout } from "../../axios";
 import * as BottomNav from "../../components/BottomNavbar";
 import HeaderLogo from "../../components/HeaderLogo";
 import { Login } from "../../components/Login";
+import { getUserInfoQuery } from "../../query/user";
 import {
   Arrow,
   CheckboxIcon,
@@ -29,42 +33,72 @@ export interface SettingCardContents {
   onClick?: () => void;
 }
 
-export interface SettingCardAlarm extends SettingCardContents {
+export interface AlarmSettingCardContents extends SettingCardContents {
   hasCheck?: boolean; // true: 체크박스 표시, false: └─> 표시
   child?: SettingCardContents[];
 }
 
-export type SettingCardData = {
+export type SettingCardData<T extends SettingCardContents> = {
   header: SettingCardHeader;
-  content?: SettingCardAlarm[];
+  content?: T[];
   hasLogin?: boolean;
 };
 
 /** My - 설정페이지 */
-const Setting = ({ dataArray }: { dataArray: SettingCardData[] }) => {
+const Setting = () => {
+  const info = getUserInfoQuery();
+  const userData = info?.userData;
+  const navigate = useNavigate();
   const client = useQueryClient();
-  const user = client.getQueryData(["login"]) as any;
-  if (user) dataArray[0].header.title = user.name;
+
+  const settingContents = useMemo(() => ([
+    { header: { title: userData?.name || '로그인 해주세요', icon: User } },
+    userData && {
+      header: { title: "Account", icon: Settings },
+      content: [
+        { meta: "학적 정보", description: userData?.major || "학적 정보 미등록" },
+        { meta: "로그아웃", onClick: () => (alert('로그아웃'), kakaoLogout(client, navigate)) },
+        { meta: "계정 탈퇴" },
+      ],
+    },
+    {
+      header: { title: "Settings", icon: Settings },
+      content: [
+        { meta: "테마", description: "시스템 기본값" },
+        { meta: "알림 설정", onClick: () => navigate('/My/Alarm') },
+      ],
+    },
+    {
+      header: { title: "Guide", icon: Settings },
+      content: [
+        { meta: "앱 버전", description: "v.10.0", onClick: () => alert('앱 버전 클릭!') },
+        { meta: "문의하기", description: "nabest@vis.ssu.ac.kr" },
+        { meta: "개발자 정보" },
+        { meta: "서비스 이용 약관" },
+        { meta: "개인정보 처리방침" },
+        { meta: "오픈소스 라이센스" },
+      ],
+    },
+  ] as SettingCardData<SettingCardContents>[]).filter(v => v), [userData]);
   return (
     <SettingList>
       <HeaderLogo />
-      {dataArray.map((data, i) => (
+      {settingContents.map((data, i) => (
         <ItemList
           key={i}
           header={data.header}
           content={data?.content}
-          hasLogin={!i}
+          hasLogin={!i && !(userData)}
         />
       ))}
     </SettingList >
   );
 };
 
-const ItemList = ({ header, content, hasLogin }: SettingCardData) => {
+const ItemList = ({ header, content, hasLogin }: SettingCardData<SettingCardContents>) => {
   return (
     <Group elevation={4}>
-      <ItemHeader title={header.title} HeaderIcon={header.icon} bold />
-      {hasLogin && <Login />}
+      <ItemHeader title={header.title} HeaderIcon={header.icon} bold>{hasLogin && <Login />}</ItemHeader>
       {content && (
         <ContentGroup>
           {content.map((v, i) => (
@@ -84,17 +118,16 @@ const ItemList = ({ header, content, hasLogin }: SettingCardData) => {
 /** My - 알림 설정 페이지 */
 const AlarmSetting = ({
   dataArray,
-  goBack,
 }: {
-  dataArray: SettingCardData[];
-  goBack: () => void;
+  dataArray: SettingCardData<AlarmSettingCardContents>[];
 }) => {
+  const navigate = useNavigate();
   return (
     <SettingList>
       <HeaderLogo />
       <ContentRow>
         <Icon>
-          <ArrowLeft size={24} onClick={() => goBack()} />
+          <ArrowLeft size={24} onClick={() => navigate('/My')} />
         </Icon>
         <Icon>
           <Settings size={24} />
@@ -115,7 +148,7 @@ const AlarmSetting = ({
   );
 };
 
-const AlarmSettingList = ({ header, content }: SettingCardData) => {
+const AlarmSettingList = ({ header, content }: SettingCardData<AlarmSettingCardContents>) => {
   content = content.flatMap((v) => (v.child ? [v, ...v.child] : v));
   return (
     <Group elevation={4}>
@@ -152,11 +185,13 @@ const ItemHeader = ({
   HeaderIcon,
   padding,
   bold,
+  children
 }: {
   title: string;
   HeaderIcon: BottomNav.Icon;
   padding?: boolean;
   bold: boolean;
+  children?;
 }) => {
   return (
     <Header>
@@ -164,12 +199,13 @@ const ItemHeader = ({
       <Title padding={padding} bold={bold}>
         {title}
       </Title>
+      {children}
     </Header>
   );
 };
 
 /** 체크버튼 있는 단일 요소인 alarm설정 */
-const ContentCheck = ({ onClick, meta }: SettingCardAlarm) => {
+const ContentCheck = ({ onClick, meta }: AlarmSettingCardContents) => {
   const sx = {
     "& .MuiSvgIcon-root": {
       fontSize: "2.5vh",
@@ -191,7 +227,7 @@ const ContentCheck = ({ onClick, meta }: SettingCardAlarm) => {
 };
 
 /** 자식 요소인 alarm설정 */
-const ContentChild = ({ onClick, meta, description }: SettingCardAlarm) => {
+const ContentChild = ({ onClick, meta, description }: AlarmSettingCardContents) => {
   return (
     <ContentRow>
       <Arrow />

@@ -1,9 +1,9 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import KakaoLogin from "react-kakao-login";
 import { Props } from "react-kakao-login/lib/types";
 import { useNavigate } from "react-router-dom";
-import { useLoginQuery } from "../../apis/user";
+import { loginQuery } from "../../query/user";
 
 const testSetAlarm = async () => {
   await axios.put('/api/2705751941/alarms', {
@@ -11,11 +11,11 @@ const testSetAlarm = async () => {
   });
 }
 
-export const Login = () => {
+export const Login = memo(() => {
   const navigate = useNavigate();
   const [isGetKakaoInfo, setIsGetKakaoInfo] = useState(false);
 
-  const loginQuery = useLoginQuery();
+  const loginInfo = loginQuery();
 
   const onSuccess: Props['onSuccess'] = async ({ response, profile }) => {
     console.log('kakao login success', { response, profile });
@@ -44,4 +44,4 @@ export const Login = () => {
       {/* <button onClick={testSetAlarm}>set alarm test</button> */}
     </>
   )
-}
+})
