@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
-import { Checkbox } from "@mui/material";
-import { Paper } from "@mui/material";
 import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
+import { Checkbox as checkbox, Paper } from "@mui/material";
 
 export const SettingList = styled.div`
   width: 95vw;
@@ -19,7 +18,7 @@ const SettingCard = {
     align-items: center;
     padding: 0.15em 0;
   `,
-  CheckboxIcon: styled(Checkbox)`
+  Checkbox: styled(checkbox)`
     padding: 0 0.5em;
   `,
   Arrow: styled(SubdirectoryArrowRightIcon)`
@@ -73,4 +72,4 @@ const SettingCard = {
     margin-bottom: 0.5em;
   `,
 };
-export const {Arrow, CheckboxIcon, Content, ContentGroup, ContentRow, Description, Group, Header, Icon, Meta, Title} = SettingCard;
+export const { Arrow, Checkbox, Content, ContentGroup, ContentRow, Description, Group, Header, Icon, Meta, Title } = SettingCard;

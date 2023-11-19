@@ -1,25 +1,21 @@
 import { SettingCardContents, SettingCardData } from "../pages/MyPage";
 
 export class User {
-  private user: IUser;
-  private alarm: IAlarm;
-  private bookmark: IBookmark;
-  private reads: IRead;
-  private noticesLike: INoticeLike;
-  private eventsLike: IEventsLike;
-  private settingData: SettingCardData<SettingCardContents>[];
-
-  public get userData() {
-    return this.user;
-  }
+  public user: IUser;
+  public alarm: IAlarm;
+  public bookmark: IBookmark;
+  public reads: IRead;
+  public noticesLike: INoticeLike;
+  public eventsLike: IEventsLike;
+  public settingData: SettingCardData<SettingCardContents>[];
 
   constructor(
     user: IUser,
-    alarm: IAlarm,
-    bookmark: IBookmark,
-    reads: IRead,
-    noticesLike: INoticeLike,
-    eventsLike: IEventsLike
+    alarm?: IAlarm,
+    bookmark?: IBookmark,
+    reads?: IRead,
+    noticesLike?: INoticeLike,
+    eventsLike?: IEventsLike
   ) {
     this.user = user;
     this.alarm = alarm;
@@ -27,7 +23,6 @@ export class User {
     this.reads = reads;
     this.noticesLike = noticesLike;
     this.eventsLike = eventsLike;
-
   }
 
 }
@@ -43,14 +38,15 @@ export interface IUser {
 }
 
 export interface IAlarm {
-  alarm_push?: boolean;
-  event_push?: boolean;
-  events_timer?: number;
-  events_post: '북마크' | '전체';
-  major_schedule_push?: boolean;
-  major_schedule_post?: boolean;
-  notice_push?: boolean;
-  alerts_push?: boolean;
+  alarm_push: boolean;
+  event_push: boolean;
+  events_timer: number;
+  events_form: '북마크' | '전체';
+  events_post: boolean;
+  major_schedule_push: boolean;
+  major_schedule_post: boolean;
+  notice_push: boolean;
+  alerts_push: boolean;
 }
 
 export interface INoticeLike {

@@ -4,7 +4,6 @@ import BottomNavbar from "./components/BottomNavbar";
 import LinktreePage from "./pages/LinktreePage";
 import MainPage from "./pages/MainPage";
 import { AlarmSetting, Setting } from "./pages/MyPage";
-import { AlarmArray } from "./pages/MyPage/menuList";
 import NoticePage from "./pages/NoticePage";
 import TerracePage from "./pages/TerracePage";
 import { loginQuery } from "./query/user";
@@ -21,7 +20,7 @@ function App() {
         <Route path="LinkTree" element={<LinktreePage />} />
         <Route path="/My">
           <Route index element={<Setting />} />
-          <Route path="alarm" element={<AlarmSetting dataArray={AlarmArray} />} />
+          <Route path="alarm" element={<AlarmSetting />} />
         </Route>
       </Routes>
       <BottomNavbar />

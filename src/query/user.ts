@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { login } from "../axios";
-import { loginResponse } from "../axios/user";
+import { getUserInfo, loginResponse } from "../axios/user";
 import { User } from "../context/user";
 
 export const loginQuery = () => {
@@ -26,92 +26,20 @@ export const loginQuery = () => {
   return info;
 };
 
-// export const getUserInfoQuery = () => {
-//   const client = useQueryClient();
-//   const loginData = client.getQueryData<loginResponse>(["login"]);
-//   const info = useQuery({
-//     queryKey: ['userInfo'],
-//     queryFn: () => getUserInfo(loginData.id),
-//     enabled: !!loginData,
-//     staleTime: Infinity,
-//     select(data) {
-//       const userData = new User({
-//         account: 'string',
-//         activated: true,
-//         createdDate: new Date(),
-//         id: 12,
-//         lastAccess: new Date(),
-//         major: '소프트',
-//         name: 'asdf'
-//       }, {
-//         alarm_push: true,
-//         alerts_push: true,
-//         events_post: '북마크',
-//         event_push: true,
-//         events_timer: 12,
-//         major_schedule_post: true,
-//         major_schedule_push: true,
-//         notice_push: true
-//       }, {
-//         fk_bookmark_id: 12,
-//         fk_event_id: 34
-//       }, {
-//         fk_notice_id: 12,
-//         fk_read_id: 34
-//       }, {
-//         fk_notice_id: 12,
-//         fk_user_id: 34,
-//         like: true
-//       }, {
-//         fk_event_id: 12,
-//         fk_user_id: 34,
-//         like: true
-//       });
-
-//       return userData
-//     }
-//   })
-
-//   return info;
-// }
-
 export const getUserInfoQuery = () => {
   const client = useQueryClient();
   const loginData = client.getQueryData<loginResponse>(["login"]);
-  console.log({ loginData })
-  const userData = new User({
-    account: 'string',
-    activated: true,
-    createdDate: new Date(),
-    id: 12,
-    lastAccess: new Date(),
-    major: '소프트',
-    name: 'asdf'
-  }, {
-    alarm_push: true,
-    alerts_push: true,
-    events_post: '북마크',
-    event_push: true,
-    events_timer: 12,
-    major_schedule_post: true,
-    major_schedule_push: true,
-    notice_push: true
-  }, {
-    fk_bookmark_id: 12,
-    fk_event_id: 34
-  }, {
-    fk_notice_id: 12,
-    fk_read_id: 34
-  }, {
-    fk_notice_id: 12,
-    fk_user_id: 34,
-    like: true
-  }, {
-    fk_event_id: 12,
-    fk_user_id: 34,
-    like: true
-  });
+  const info = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: () => getUserInfo(loginData.id),
+    enabled: !!loginData,
+    staleTime: Infinity,
+    select(data) {
+      const userData = new User(data);
 
-  return loginData ? userData : undefined;
+      return loginData && userData
+    }
+  })
 
+  return info;
 }
