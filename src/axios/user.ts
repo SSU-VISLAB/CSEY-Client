@@ -21,7 +21,17 @@ export function login() {
       expired: localStorage.getItem('kakao_expires_in')
     },
     { withCredentials: true }
-  ).then(res => res.data as loginResponse);
+  ).then(({ data }) => {
+    if ('new_kakao_access_token' in data) {
+      const { new_kakao_access_token, new_kakao_refresh_token, new_expires_in } = data;
+      const currentDate = new Date();
+      console.log('new kakao token received');
+      localStorage.setItem('kakao_accessToken', new_kakao_access_token);
+      localStorage.setItem('kakao_refreshToken', new_kakao_refresh_token);
+      localStorage.setItem('kakao_expires_in', currentDate.setSeconds(currentDate.getSeconds() + +new_expires_in).toString());
+    }
+    return data as loginResponse
+  });
 }
 
 export const kakaoLogout = async (client: QueryClient, navigate: NavigateFunction) => {
