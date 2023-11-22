@@ -178,8 +178,7 @@ const AlarmSetting = () => {
 };
 
 const AlarmSettingGroup = ({ group }: { group: AlarmGroup }) => {
-  const client = useQueryClient();
-  const mutation = setAlarmMutation(client);
+  const mutation = setAlarmMutation();
   group.setMutations(mutation);
 
   let { header, contents } = group;

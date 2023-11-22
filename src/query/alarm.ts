@@ -1,5 +1,4 @@
-import { QueryClient } from '@tanstack/query-core';
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAlarms } from "../axios";
 import { setAlarm } from "../axios/alarm";
 import { IAlarm } from "../context/user";
@@ -19,7 +18,8 @@ export const getAlarmsQuery = (id: number) => {
   return info;
 }
 
-export const setAlarmMutation = (queryClient: QueryClient) => {
+export const setAlarmMutation = () => {
+  const queryClient = useQueryClient();
   const setAlarmMutation = useMutation({
     mutationFn: setAlarm,
     onSuccess(data, variables, context) {
