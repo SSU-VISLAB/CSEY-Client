@@ -4,6 +4,7 @@ import { getUserInfo, loginResponse } from "../axios/user";
 import { User } from "../context/user";
 
 export const loginQuery = () => {
+  console.log('loginQuery called')
   const info = useQuery({
     queryKey: ['login'],
     queryFn: () => login(),

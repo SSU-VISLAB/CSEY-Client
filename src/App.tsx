@@ -10,7 +10,7 @@ import { loginQuery } from "./query/user";
 
 function App() {
   const info = loginQuery();
-  console.log('app rerender', info.data)
+  console.log('app rerender', info?.data?.name)
   return (
     <Div>
       <Routes>

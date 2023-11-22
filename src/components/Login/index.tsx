@@ -14,7 +14,7 @@ const testSetAlarm = async () => {
 export const Login = memo(() => {
   const navigate = useNavigate();
   const [isGetKakaoInfo, setIsGetKakaoInfo] = useState(false);
-
+  // login 후 useState set으로 rerender 트리거 하면서(동시에 enable 속성 true) 쿼리 진행
   const loginInfo = loginQuery();
 
   const onSuccess: Props['onSuccess'] = async ({ response, profile }) => {

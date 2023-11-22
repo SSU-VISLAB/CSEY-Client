@@ -1,14 +1,13 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useMemo } from "react";
 import { ArrowLeft, Settings, User } from "react-feather";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { kakaoLogout } from "../../axios";
 import * as BottomNav from "../../components/BottomNavbar";
 import HeaderLogo from "../../components/HeaderLogo";
 import { Login } from "../../components/Login";
-import { AlarmSettingContents } from "../../context/setting";
+import { AlarmGroup, AlarmSettingContents } from "../../context/setting";
 import { getAlarmsQuery, setAlarmMutation } from "../../query/alarm";
-import { getUserInfoQuery, loginQuery } from "../../query/user";
+import { getUserInfoQuery } from "../../query/user";
 import {
   Arrow,
   Checkbox,
@@ -43,70 +42,67 @@ export interface AlarmSettingCardContents extends SettingCardContents {
 
 export type SettingCardData<T extends SettingCardContents> = {
   header: SettingCardHeader;
-  content?: T[];
+  contents?: T[];
   hasLogin?: boolean;
 };
 
 /** My - 설정페이지 */
 const Setting = () => {
-  loginQuery();
   const info = getUserInfoQuery();
   const userData = info.data?.user;
   const navigate = useNavigate();
   const client = useQueryClient();
-
-  const settingContents = useMemo(
-    () =>
-      (
-        [
-          {
-            header: { title: userData?.name || "로그인 해주세요", icon: User },
-          },
-          userData && {
-            header: { title: "Account", icon: Settings },
-            content: [
-              {
-                meta: "학적 정보",
-                description: userData?.major || "학적 정보 미등록",
-              },
-              {
-                meta: "로그아웃",
-                eventHandler: () => (
-                  alert("로그아웃"), kakaoLogout(client, navigate)
-                ),
-              },
-              { meta: "계정 탈퇴" },
-            ],
-          },
-          {
-            header: { title: "Settings", icon: Settings },
-            content: [
-              { meta: "테마", description: "시스템 기본값" },
-              userData && {
-                meta: "알림 설정",
-                eventHandler: () => navigate("/My/Alarm"),
-              },
-            ].filter((v) => v),
-          },
-          {
-            header: { title: "Guide", icon: Settings },
-            content: [
-              {
-                meta: "앱 버전",
-                description: "v.10.0",
-                eventHandler: () => alert("앱 버전 클릭!"),
-              },
-              { meta: "문의하기", description: "nabest@vis.ssu.ac.kr" },
-              { meta: "개발자 정보" },
-              { meta: "서비스 이용 약관" },
-              { meta: "개인정보 처리방침" },
-              { meta: "오픈소스 라이센스" },
-            ],
-          },
-        ] as SettingCardData<SettingCardContents>[]
-      ).filter((v) => v),
-    [userData],
-  );
+  const alarmInfo = getAlarmsQuery(userData?.id);
+  console.log({ userData, alarm: alarmInfo.data })
+  const settingContents = ([
+    {
+      header: { title: userData?.name || "로그인 해주세요", icon: User },
+    },
+    userData && {
+      header: { title: "Account", icon: Settings },
+      contents: [
+        {
+          meta: "학적 정보",
+          description: userData?.major || "학적 정보 미등록",
+        },
+        {
+          meta: "로그아웃",
+          eventHandler: () => (
+            alert("로그아웃"), kakaoLogout(client, navigate)
+          ),
+        },
+        { meta: "계정 탈퇴" },
+      ],
+    },
+    {
+      header: { title: "Settings", icon: Settings },
+      contents: [
+        { meta: "테마", description: "시스템 기본값" },
+        userData && {
+          meta: "알림 설정",
+          eventHandler: () => navigate("/My/Alarm", {
+            state: alarmInfo.data
+          }),
+        },
+      ].filter((v) => v),
+    },
+    {
+      header: { title: "Guide", icon: Settings },
+      contents: [
+        {
+          meta: "앱 버전",
+          description: "v.10.0",
+          eventHandler: () => alert("앱 버전 클릭!"),
+        },
+        { meta: "문의하기", description: "nabest@vis.ssu.ac.kr" },
+        { meta: "개발자 정보" },
+        { meta: "서비스 이용 약관" },
+        { meta: "개인정보 처리방침" },
+        { meta: "오픈소스 라이센스" },
+      ],
+    },
+  ] as SettingCardData<SettingCardContents>[]
+  ).filter((v) => v)
   return (
     <SettingList>
       <HeaderLogo />
@@ -114,7 +110,7 @@ const Setting = () => {
         <ItemList
           key={i}
           header={data.header}
-          content={data?.content}
+          contents={data?.contents}
           hasLogin={!i && !userData}
         />
       ))}
@@ -124,7 +120,7 @@ const Setting = () => {
 
 const ItemList = ({
   header,
-  content,
+  contents: content,
   hasLogin,
 }: SettingCardData<SettingCardContents>) => {
   return (
@@ -150,21 +146,12 @@ const ItemList = ({
 
 /** My - 알림 설정 페이지 */
 const AlarmSetting = () => {
-  const userInfo = getUserInfoQuery();
-  const userData = userInfo?.data?.user;
-  const alarms = getAlarmsQuery(userData?.id);
-  const alarmData = alarms?.data;
   const navigate = useNavigate();
-  const client = useQueryClient();
-  const setAlarm = setAlarmMutation(client);
-  if (!alarmData) return "loading...";
-  console.time('contents')
-  const alarmContents = new AlarmSettingContents(alarmData, setAlarm).getContents();
-  console.timeEnd('contents')
-  // TODO: alarmContent class에 메서드 추가
-  // setAlarmData, setMutation => 설정 시 value와 eventHandler 추가
-  // AlarmSettingList 컴포넌트에서 메서드 호출
-  console.log({ alarmContents })
+  const { state } = useLocation();
+  const alarmData = state || getAlarmsQuery(+localStorage.getItem('kakao_id')).data;
+  console.log({ state, alarmData })
+  const alarmGroups = alarmData && new AlarmSettingContents(alarmData).getGroups()
+  if (!alarmGroups) return "loading...";
   return (
     <SettingList>
       <HeaderLogo />
@@ -180,22 +167,28 @@ const AlarmSetting = () => {
         </Title>
       </ContentRow>
 
-      {alarmContents.map((alarmGroup, i) => (
-        <AlarmSettingList
+      {alarmGroups.map((alarmGroup, i) => (
+        <AlarmSettingGroup
           key={i}
-          header={alarmGroup.header}
-          content={alarmGroup?.content}
-        ></AlarmSettingList>
+          group={alarmGroup}
+        ></AlarmSettingGroup>
       ))}
     </SettingList>
   );
 };
 
-const AlarmSettingList = ({
-  header,
-  content,
-}: SettingCardData<AlarmSettingCardContents>) => {
-  content = content.flatMap((v) => (v.child ? [v, ...v.child] : v));
+const AlarmSettingGroup = ({ group }: { group: AlarmGroup }) => {
+  const client = useQueryClient();
+  const mutation = setAlarmMutation(client);
+  group.setMutations(mutation);
+
+  let { header, contents } = group;
+  contents = contents.flatMap((v) => (v.child ? [v, ...v.child] : v));
+  console.log('rerender', header);
+  if (mutation.isSuccess) {
+    const key = Object.keys(mutation.variables)[0];
+    group.findContent(key).value = mutation.variables[key];
+  }
   return (
     <Group elevation={4}>
       <ItemHeader
@@ -203,23 +196,23 @@ const AlarmSettingList = ({
         bold
       />
       <ContentGroup>
-        {content.map((v) => {
+        {contents.map((v) => {
           if (v.hasCheck)
             return (
               <ContentCheck
-                eventHandler={v.eventHandler}
-                meta={v.meta}
                 key={v.meta}
+                meta={v.meta}
                 value={v.value}
+                eventHandler={v.eventHandler}
               />
             );
           else
             return (
               <ContentChild
-                eventHandler={v.eventHandler}
+                key={v.meta}
                 meta={v.meta}
                 description={v.description}
-                key={v.meta}
+                eventHandler={v.eventHandler}
               />
             );
         })}
