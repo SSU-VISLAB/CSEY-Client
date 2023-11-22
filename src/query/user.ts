@@ -10,18 +10,6 @@ export const loginQuery = () => {
     enabled: !!(localStorage.getItem('kakao_id') && localStorage.getItem('kakao_accessToken')),
     retry: false,
     staleTime: Infinity,
-    select(data) {
-      if ('new_kakao_access_token' in data) {
-        const { new_kakao_access_token, new_kakao_refresh_token, new_expires_in } = data;
-        const currentDate = new Date();
-        console.log('new kakao token received');
-        localStorage.setItem('kakao_accessToken', new_kakao_access_token);
-        localStorage.setItem('kakao_refreshToken', new_kakao_refresh_token);
-        localStorage.setItem('kakao_expires_in', currentDate.setSeconds(currentDate.getSeconds() + +new_expires_in).toString());
-      }
-      return data
-    },
-
   });
   return info;
 };
