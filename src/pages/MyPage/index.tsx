@@ -184,7 +184,11 @@ const AlarmSettingGroup = ({ group }: { group: AlarmGroup }) => {
   let { header, contents } = group;
   contents = contents.flatMap((v) => (v.child ? [v, ...v.child] : v));
   console.log('rerender', header);
-  if (mutation.isSuccess) {
+  if (mutation.isError) {
+    const key = Object.keys(mutation.variables)[0];
+    group.findContent(key).value = !mutation.variables[key];
+  }
+  if (mutation.isPending) {
     const key = Object.keys(mutation.variables)[0];
     group.findContent(key).value = mutation.variables[key];
   }

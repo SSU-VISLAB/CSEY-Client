@@ -22,11 +22,14 @@ export const setAlarmMutation = () => {
   const queryClient = useQueryClient();
   const setAlarmMutation = useMutation({
     mutationFn: setAlarm,
-    onSuccess(data, variables, context) {
-      const alarms = queryClient.getQueryData<IAlarm>(['getAlarms'])
-      const updated = queryClient.setQueryData<IAlarm>(['getAlarms'], { ...alarms, ...variables });
-      // queryClient.invalidateQueries({ queryKey: ["getAlarms"] });
+    onMutate(nextAlarm) {
+      const prevAlarms = queryClient.getQueryData<IAlarm>(['getAlarms'])
+      const nextAlarms = queryClient.setQueryData<IAlarm>(['getAlarms'], { ...prevAlarms, ...nextAlarm });
+      return { prevAlarms, nextAlarms };
     },
+    onError(error, nextAlarm, context) {
+      queryClient.setQueryData<IAlarm>(['getAlarms'], context.prevAlarms);
+    }
   })
   return setAlarmMutation;
 }
