@@ -1,21 +1,16 @@
-import axios from "axios";
+import { useQueryClient } from "@tanstack/react-query";
 import { memo, useEffect, useState } from "react";
 import KakaoLogin from "react-kakao-login";
 import { Props } from "react-kakao-login/lib/types";
 import { useNavigate } from "react-router-dom";
 import { loginQuery } from "../../query/user";
 
-const testSetAlarm = async () => {
-  await axios.put('/api/2705751941/alarms', {
-    alarm_push: 0
-  });
-}
-
 export const Login = memo(() => {
+  const client = useQueryClient();
   const navigate = useNavigate();
-  const [isGetKakaoInfo, setIsGetKakaoInfo] = useState(false);
-
-  const loginInfo = loginQuery();
+  const [, setIsGetKakaoInfo] = useState(false);
+  // login 후 useState set으로 rerender 트리거 및 쿼리 갱신
+  const { isSuccess } = loginQuery();
 
   const onSuccess: Props['onSuccess'] = async ({ response, profile }) => {
     console.log('kakao login success', { response, profile });
@@ -30,8 +25,11 @@ export const Login = memo(() => {
   }
 
   useEffect(() => {
-    isGetKakaoInfo && navigate('/My');
-  }, [isGetKakaoInfo]);
+    if (isSuccess) {
+      console.log({ isSuccess })
+      navigate('/My', { replace: true });
+    }
+  }, [isSuccess]);
 
   return (
     <>
@@ -41,7 +39,6 @@ export const Login = memo(() => {
         onFail={(error) => console.log({ error })}
         onLogout={(token) => console.log(token)}
       ></KakaoLogin>
-      {/* <button onClick={testSetAlarm}>set alarm test</button> */}
     </>
   )
 })
