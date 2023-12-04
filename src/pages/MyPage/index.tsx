@@ -1,13 +1,15 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { memo } from "react";
 import { ArrowLeft, Settings, User } from "react-feather";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { kakaoLogout } from "../../axios";
 import * as BottomNav from "../../components/BottomNavbar";
 import HeaderLogo from "../../components/HeaderLogo";
 import { Login } from "../../components/Login";
-import { AlarmGroup, AlarmSettingContents } from "../../context/setting";
+import { AlarmGroup } from "../../context/setting";
 import { getAlarmsQuery, setAlarmMutation } from "../../query/alarm";
 import { getUserInfoQuery } from "../../query/user";
+import { useAlarmSettingContents } from "./hook";
 import {
   Arrow,
   Checkbox,
@@ -80,9 +82,7 @@ const Setting = () => {
         { meta: "테마", description: "시스템 기본값" },
         userData && {
           meta: "알림 설정",
-          eventHandler: () => navigate("/My/Alarm", {
-            state: alarmInfo.data
-          }),
+          eventHandler: () => navigate("/My/Alarm"),
         },
       ].filter((v) => v),
     },
@@ -147,11 +147,7 @@ const ItemList = ({
 /** My - 알림 설정 페이지 */
 const AlarmSetting = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const alarmData = state || getAlarmsQuery(+localStorage.getItem('kakao_id')).data;
-  console.log({ state, alarmData })
-  const alarmGroups = alarmData && new AlarmSettingContents(alarmData).getGroups()
-  if (!alarmGroups) return "loading...";
+  const alarmGroups = useAlarmSettingContents();
   return (
     <SettingList>
       <HeaderLogo />
@@ -167,7 +163,7 @@ const AlarmSetting = () => {
         </Title>
       </ContentRow>
 
-      {alarmGroups.map((alarmGroup, i) => (
+      {alarmGroups?.map((alarmGroup, i) => (
         <AlarmSettingGroup
           key={i}
           group={alarmGroup}
@@ -177,7 +173,7 @@ const AlarmSetting = () => {
   );
 };
 
-const AlarmSettingGroup = ({ group }: { group: AlarmGroup }) => {
+const AlarmSettingGroup = memo(({ group }: { group: AlarmGroup }) => {
   const mutation = setAlarmMutation();
   group.setMutations(mutation);
 
@@ -222,10 +218,13 @@ const AlarmSettingGroup = ({ group }: { group: AlarmGroup }) => {
       </ContentGroup>
     </Group>
   );
-};
+}, (prev, next) => {
+  const nextContents = next.group.contents;
+  return prev.group.contents.every((content, index) => content.value == nextContents[index].value)
+});
 
 /** My - 공통 컴포넌트, {아이콘} {제목} 표시 */
-const ItemHeader = ({
+const ItemHeader = memo(({
   title,
   HeaderIcon,
   padding,
@@ -247,7 +246,7 @@ const ItemHeader = ({
       {children}
     </Header>
   );
-};
+});
 
 /** 체크버튼 있는 단일 요소인 alarm설정 */
 const ContentCheck = ({

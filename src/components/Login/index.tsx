@@ -26,7 +26,6 @@ export const Login = memo(() => {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log({ isSuccess })
       navigate('/My', { replace: true });
     }
   }, [isSuccess]);
