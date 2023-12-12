@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { memo, useEffect, useState } from "react";
 import KakaoLogin from "react-kakao-login";
 import { Props } from "react-kakao-login/lib/types";
@@ -6,30 +5,24 @@ import { useNavigate } from "react-router-dom";
 import { loginQuery } from "../../query/user";
 
 export const Login = memo(() => {
-  const client = useQueryClient();
   const navigate = useNavigate();
-  const [, setIsGetKakaoInfo] = useState(false);
-  // login 후 useState set으로 rerender 트리거 및 쿼리 갱신
-  const { isSuccess } = loginQuery();
+  const [{ id, access_token }, setLoginData] = useState<{ id, access_token }>({ id: undefined, access_token: undefined });
+  const { isSuccess, data } = loginQuery(id, access_token);
 
   const onSuccess: Props['onSuccess'] = async ({ response, profile }) => {
     console.log('kakao login success', { response, profile });
     const { id } = profile;
-    const { access_token, refresh_token, expires_in } = response;
-    const currentDate = new Date();
-    localStorage.setItem('kakao_accessToken', access_token);
-    localStorage.setItem('kakao_refreshToken', refresh_token);
-    localStorage.setItem('kakao_id', id.toString());
-    localStorage.setItem('kakao_expires_in', currentDate.setSeconds(currentDate.getSeconds() + +expires_in).toString())
-    setIsGetKakaoInfo(true);
+    const { access_token } = response;
+    setLoginData({ id, access_token });
   }
 
   useEffect(() => {
-    if (isSuccess) {
-      console.log({ isSuccess })
-      navigate('/My', { replace: true });
-    }
-  }, [isSuccess]);
+    isSuccess && navigate('/My', { replace: true });
+  }, [isSuccess])
+
+  if (isSuccess) {
+    localStorage.setItem('info', JSON.stringify(data));
+  }
 
   return (
     <>

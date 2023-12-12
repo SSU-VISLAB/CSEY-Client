@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { Route, Routes } from "react-router-dom";
 import { Div } from "./AppStyles";
 import BottomNavbar from "./components/BottomNavbar";
@@ -6,11 +7,14 @@ import MainPage from "./pages/MainPage";
 import { AlarmSetting, Setting } from "./pages/MyPage";
 import NoticePage from "./pages/NoticePage";
 import TerracePage from "./pages/TerracePage";
-import { loginQuery } from "./query/user";
 
 function App() {
-  const info = loginQuery();
-  console.log('app rerender', info.data)
+  const client = useQueryClient();
+  const loginInfo = localStorage.getItem('info');
+  if (loginInfo) {
+    client.setQueryData(['login'], JSON.parse(loginInfo));
+  }
+  console.log("APP rerender")
   return (
     <Div>
       <Routes>

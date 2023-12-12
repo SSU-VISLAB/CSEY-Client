@@ -7,7 +7,7 @@ import * as BottomNav from "../../components/BottomNavbar";
 import HeaderLogo from "../../components/HeaderLogo";
 import { Login } from "../../components/Login";
 import { getAlarmsQuery, setAlarmMutation } from "../../query/alarm";
-import { getUserInfoQuery, loginQuery } from "../../query/user";
+import { getUserInfoQuery } from "../../query/user";
 import {
   Arrow,
   Checkbox,
@@ -60,7 +60,6 @@ const mapper = {
 
 /** My - 설정페이지 */
 const Setting = () => {
-  loginQuery();
   const info = getUserInfoQuery();
   const userData = info.data?.user;
   const navigate = useNavigate();
