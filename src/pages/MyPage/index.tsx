@@ -9,6 +9,7 @@ import { Login } from "../../components/Login";
 import { AlarmGroup } from "../../context/setting";
 import { getAlarmsQuery, setAlarmMutation } from "../../query/alarm";
 import { getUserInfoQuery } from "../../query/user";
+import { useAlarmSettingContents } from "./hook";
 import {
   Arrow,
   Checkbox,

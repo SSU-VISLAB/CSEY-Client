@@ -29,6 +29,7 @@ export const kakaoLogout = async (client: QueryClient, navigate: NavigateFunctio
     localStorage.removeItem('info');
     client.removeQueries({ queryKey: ['login'] });
     client.removeQueries({ queryKey: ['userInfo'] });
+    client.removeQueries({ queryKey: ['getAlarms'] });
     navigate('/My', { replace: true });
   });
 }
