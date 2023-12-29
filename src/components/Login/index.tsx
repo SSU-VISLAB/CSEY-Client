@@ -2,11 +2,11 @@ import { memo, useEffect, useState } from "react";
 import KakaoLogin from "react-kakao-login";
 import { Props } from "react-kakao-login/lib/types";
 import { useNavigate } from "react-router-dom";
-import { loginQuery } from "../../query/user";
+import { loginQuery } from "../../api/query/user";
 
 export const Login = memo(() => {
   const navigate = useNavigate();
-  const [{ id, access_token }, setLoginData] = useState<{ id, access_token }>({ id: undefined, access_token: undefined });
+  const [{ id, access_token }, setLoginData] = useState({ id: undefined, access_token: undefined });
   const { isSuccess, data } = loginQuery(id, access_token);
 
   const onSuccess: Props['onSuccess'] = async ({ response, profile }) => {
@@ -17,17 +17,16 @@ export const Login = memo(() => {
   }
 
   useEffect(() => {
-    isSuccess && navigate('/My', { replace: true });
+    if (isSuccess) {
+      localStorage.setItem('info', JSON.stringify(data));
+      navigate('/My', { replace: true });
+    }
   }, [isSuccess])
-
-  if (isSuccess) {
-    localStorage.setItem('info', JSON.stringify(data));
-  }
 
   return (
     <>
       <KakaoLogin
-        token="b958ef2c36fbd4932218114b53bc8328"
+        token="b958ef2c36fbd4932218114b53bc8328" // TODO: 환경변수화
         onSuccess={onSuccess}
         onFail={(error) => console.log({ error })}
         onLogout={(token) => console.log(token)}

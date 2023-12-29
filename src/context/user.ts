@@ -1,4 +1,5 @@
 import { SettingCardContents, SettingCardData } from "../pages/MyPage";
+import { AlarmSettingContents } from "./setting";
 
 export class User {
   public user: IUser;

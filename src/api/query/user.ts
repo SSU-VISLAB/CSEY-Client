@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { User } from "../../context/user";
 import { login } from "../axios";
 import { getUserInfo, loginResponse } from "../axios/user";
-import { User } from "../context/user";
 
 export const loginQuery = (id: number, kakao_accessToken: string) => {
   const info = useQuery({
@@ -23,8 +23,8 @@ export const getUserInfoQuery = () => {
     enabled: !!loginData,
     staleTime: Infinity,
     select(data) {
-      const userData = new User(data);
-      return userData
+      const { alarm, bookmark, eventLike, noticeLike, noticeRead } = data;
+      return new User(loginData, alarm, bookmark, noticeRead, noticeLike, eventLike);
     }
   })
 

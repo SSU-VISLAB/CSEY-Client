@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Route, Routes } from "react-router-dom";
 import { Div } from "./AppStyles";
+import { getUserInfoQuery } from "./api/query/user";
 import BottomNavbar from "./components/BottomNavbar";
 import LinktreePage from "./pages/LinktreePage";
 import MainPage from "./pages/MainPage";
@@ -10,9 +11,10 @@ import TerracePage from "./pages/TerracePage";
 
 function App() {
   const client = useQueryClient();
-  const loginInfo = localStorage.getItem('info');
+  const loginInfo = JSON.parse(localStorage.getItem('info'));
   if (loginInfo) {
-    client.setQueryData(['login'], JSON.parse(loginInfo));
+    client.setQueryData(['login'], loginInfo);
+    getUserInfoQuery();
   }
   console.log("APP rerender")
   return (

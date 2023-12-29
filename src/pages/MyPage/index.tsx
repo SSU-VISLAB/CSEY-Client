@@ -2,14 +2,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { memo } from "react";
 import { ArrowLeft, Settings, User } from "react-feather";
 import { useNavigate } from "react-router-dom";
-import { kakaoLogout } from "../../axios";
+import { kakaoLogout } from "../../api/axios";
+import { setAlarmMutation } from "../../api/query/alarm";
+import { getUserInfoQuery } from "../../api/query/user";
 import * as BottomNav from "../../components/BottomNavbar";
 import HeaderLogo from "../../components/HeaderLogo";
 import { Login } from "../../components/Login";
 import { AlarmGroup } from "../../context/setting";
-import { getAlarmsQuery, setAlarmMutation } from "../../query/alarm";
-import { getUserInfoQuery } from "../../query/user";
-import { useAlarmSettingContents } from "./hook";
 import {
   Arrow,
   Checkbox,
@@ -24,6 +23,7 @@ import {
   SettingList,
   Title,
 } from "./styles";
+import { getAlarmSettingContents } from "./utils";
 
 export type SettingCardHeader = {
   icon?: BottomNav.Icon;
@@ -51,11 +51,10 @@ export type SettingCardData<T extends SettingCardContents> = {
 /** My - 설정페이지 */
 const Setting = () => {
   const info = getUserInfoQuery();
+  console.log("userData", info.data)
   const userData = info.data?.user;
   const navigate = useNavigate();
   const client = useQueryClient();
-  const alarmInfo = getAlarmsQuery(userData?.id);
-  console.log({ userData, alarm: alarmInfo.data })
   const settingContents = ([
     {
       header: { title: userData?.name || "로그인 해주세요", icon: User },
@@ -147,7 +146,7 @@ const ItemList = ({
 /** My - 알림 설정 페이지 */
 const AlarmSetting = () => {
   const navigate = useNavigate();
-  const alarmGroups = useAlarmSettingContents();
+  const alarmGroups = getAlarmSettingContents();
   return (
     <SettingList>
       <HeaderLogo />
@@ -174,19 +173,20 @@ const AlarmSetting = () => {
 };
 
 const AlarmSettingGroup = memo(({ group }: { group: AlarmGroup }) => {
-  const mutation = setAlarmMutation();
-  group.setMutations(mutation);
-
   let { header, contents } = group;
   contents = contents.flatMap((v) => (v.child ? [v, ...v.child] : v));
   console.log('rerender', header);
-  if (mutation.isError) {
-    const key = Object.keys(mutation.variables)[0];
-    group.findContent(key).value = !mutation.variables[key];
+
+  const mutation = setAlarmMutation();
+  group.setMutations(mutation);
+
+  const { isError, isPending, variables } = mutation;
+  const key = Object.keys(variables)[0];
+  if (isError) {
+    group.findContent(key).value = !variables[key];
   }
-  if (mutation.isPending) {
-    const key = Object.keys(mutation.variables)[0];
-    group.findContent(key).value = mutation.variables[key];
+  if (isPending) {
+    group.findContent(key).value = variables[key];
   }
   return (
     <Group elevation={4}>
