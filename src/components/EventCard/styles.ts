@@ -1,17 +1,8 @@
 import styled from "@emotion/styled";
 import { Paper } from "@mui/material";
 
-// export const EventCardWrapper = styled.div`
-//   background-color: #BAD9FA;
-//   display: flex;
-
-//   width: 157px;
-//   height: 227px;
-
-//   border-radius: 10px;
-// `;
-
 export const EventCardWrapper = styled(Paper)<{bgColor: boolean}>`
+  position: relative;
   padding: 0.2em 0.5em 0 0.5em;
   margin: 1.5vh 0;
   background-color: ${props => props.bgColor ? "#FEEBB6" : "#CEE6FF"};
@@ -24,23 +15,25 @@ export const EventCardWrapper = styled(Paper)<{bgColor: boolean}>`
 
 export const EventDday = styled.div<{bgColor: boolean}>`
   background-color: ${props => props.bgColor ? "#FEEBB6" : "#CEE6FF"};
-  z-index: 999;
+  z-index: 10;
   position: absolute;
+  top: 0;
+  left: 10;
+  padding-right: 1.4vh;
+  padding-bottom: 0.6vh;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  /* width: 50px;
-  height: 26px; */
-  border-radius: 10px;
+  border-radius: 5px;
   margin-top: 1vh;
+  font-family: var(--font-넥슨Lv1고딕);
   font-size: 3vh;
+  font-weight: 700;
 `;
 
 export const EventCardContants = styled.div`
-  /* background-color: rgba(0, 255, 255, 0.6); */
-
   display: flex;
   flex-direction: column;
 
@@ -59,8 +52,6 @@ export const EventPost = styled.img`
 `;
 
 export const BelowEventPost = styled.div`
-  /* background-color: yellow; */
-
   display: flex;
   flex-direction: column;
 
@@ -71,8 +62,6 @@ export const BelowEventPost = styled.div`
 `;
 
 export const EventInfo = styled.div`
-  /* background-color: rgba(0, 255, 0, 0.6); */
-
   display: flex;
   flex-direction: row;
   justify-content: space-between;

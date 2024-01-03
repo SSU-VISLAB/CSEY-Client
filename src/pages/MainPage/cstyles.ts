@@ -98,8 +98,3 @@ export const Day = styled.div`
   align-items: top;
   font-family: var(--font-SCDream7);
 `;
-
-export const EventCardCarousel = styled.div`
-  display: flex;
-  align-items: column;
-`;

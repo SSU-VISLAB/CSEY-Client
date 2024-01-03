@@ -5,7 +5,7 @@ import { ReactComponent as UnBookmarkIcon } from "../../assets/Icons/UnBookmarkI
 import { ReactComponent as HateIcon } from "../../assets/Icons/HateIcon.svg";
 import BookmarkOnSrc from "../../assets/Icons/BookmarkOn.png";
 import BookmarkOffSrc from "../../assets/Icons/BookmarkOff.png";
-import * as s from "./estyles";
+import * as s from "./styles";
 
 const EventCard = ({
   date,
@@ -24,8 +24,9 @@ const EventCard = ({
   const leftDate = Math.ceil((evtDate.getTime() - curDate.getTime()) / (1000 * 60 * 60 * 24));
   const WrapperColor = leftDate <= 1 ? true : false;
   return (
-    <s.EventCardWrapper elevation={8} bgColor={WrapperColor}>
-      <s.EventDday bgColor={WrapperColor}>{date}</s.EventDday>
+    leftDate < 0 ? null :
+    <s.EventCardWrapper elevation={5} bgColor={WrapperColor}>
+      <s.EventDday bgColor={WrapperColor}>{leftDate <= 1 ? "D-day" : `D-${leftDate}`}</s.EventDday>
       <s.EventCardContants>
         <s.EventPost src={image} />
         <s.BelowEventPost>
@@ -49,9 +50,4 @@ const EventCard = ({
   );
 };
 
-// function DdayIdentifier(date : string)->string {
-//   return {
-//     date? "D-{date}" : "D-day";
-//   };
-// };
 export default EventCard;
