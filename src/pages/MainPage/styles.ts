@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { keyframes } from '@emotion/react';
 import { Paper } from "@mui/material";
 
 export const MainList = styled.div`
@@ -27,6 +28,30 @@ type GroupProps = {
 type SlideProps = {
   index: number;
 };
+
+//Alert banner animation 관련
+const fadeInUp = keyframes`
+  from {
+    transform: translateY(60%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
+export const AlertList = styled.div`
+  animation: ${fadeInUp} 0.5s ease-in-out;
+  font-size: 1.8vh;
+  font-weight: 800;
+  /* font-weight: ${(props: text) => (props.bold ? "bold" : "400")}; */
+  line-height: 1.5;
+  /* 텍스트 자르기 스타일 추가 */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 90%;
+`;
 
 const AlertCard = {
   //전체 카드
@@ -67,8 +92,9 @@ const AlertCard = {
     font-weight: ${(props: text) => (props.bold ? "bold" : "400")};
   `,
   Meta: styled.span`
-    font-size: 2.3vh;
-    font-weight: ${(props: text) => (props.bold ? "bold" : "400")};
+    font-size: 1.8vh;
+    font-weight: 800;
+    /* font-weight: ${(props: text) => (props.bold ? "bold" : "400")}; */
     line-height: 1.5;
     /* 텍스트 자르기 스타일 추가 */
     text-overflow: ellipsis;

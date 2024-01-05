@@ -39,7 +39,7 @@ export interface IEventCardProps {
 const alerts = [
   {
     id: 23,
-    title: "23-2학기 전체수강신청 공지 안내",
+    title: "23-2학기 전체수강신청 공지 안내1",
     content: "안녕하세요 학부사무실입니다.\n23-2학기 전체 수강신청...",
     image: testImg,
     date: "2024-08-27T12:34:56Z",
@@ -50,7 +50,7 @@ const alerts = [
   },
   {
     id: 24,
-    title: "2023-2학기 수강신청 유의사항 안내",
+    title: "2023-2학기 수강신청 유의사항 안내2",
     content: "소프트웨어학부 수강신청 공지사항 및 참고 사항 안내\n\n...",
     image: testImg,
     date: "2024-08-30T13:25:05Z",
@@ -61,7 +61,7 @@ const alerts = [
   },
   {
     id: 24,
-    title: "2023-2학기 수강신청 유의사항 안내",
+    title: "2023-2학기 수강신청 유의사항 안내3",
     content: "소프트웨어학부 수강신청 공지사항 및 참고 사항 안내\n\n...",
     image: testImg,
     date: "2024-08-30T13:25:05Z",
@@ -72,7 +72,7 @@ const alerts = [
   },
   {
     id: 24,
-    title: "2023-2학기 수강신청 유의사항 안내",
+    title: "2023-2학기 수강신청 유의사항 안내4",
     content: "소프트웨어학부 수강신청 공지사항 및 참고 사항 안내\n\n...",
     image: testImg,
     date: "2024-01-03T13:25:05Z",
@@ -83,7 +83,7 @@ const alerts = [
   },
   {
     id: 24,
-    title: "2023-2학기 수강신청 유의사항 안내",
+    title: "2023-2학기 수강신청 유의사항 안내5",
     content: "소프트웨어학부 수강신청 공지사항 및 참고 사항 안내\n\n...",
     image: testImg,
     date: "2024-01-03T13:25:05Z",
@@ -101,7 +101,7 @@ const MainPage = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentAlertIndex((prevIndex) => (prevIndex + 1) % alerts.length);
-    }, 3000);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -137,20 +137,13 @@ const MainPage = () => {
         <s.Header>
           <s.Icon src={AlertSrc} alt="Alert" />
           {/* {alertError ? ( */}
-          {true ? (
-            <s.Meta bold>{alertError}</s.Meta>
+          {!alerts ? (
+            // <s.Meta>{alertError}</s.Meta>
+            <s.Meta>지금은 중요 공지가 없습니다.</s.Meta>
           ) : (
-            <AlertList
-              id={alerts[currentAlertIndex].id}
-              title={alerts[currentAlertIndex].title}
-              content={alerts[currentAlertIndex].content}
-              image={alerts[currentAlertIndex].image}
-              date={alerts[currentAlertIndex].date}
-              major_advisor={alerts[currentAlertIndex].major_advisor}
-              like={alerts[currentAlertIndex].like}
-              dislike={alerts[currentAlertIndex].dislike}
-              priority={alerts[currentAlertIndex].priority}
-            />
+            <s.AlertList key={currentAlertIndex}>
+                {alerts[currentAlertIndex].title}
+            </s.AlertList>
           )}
           <Link to="/Notification">
             <s.More>
@@ -176,9 +169,6 @@ const MainPage = () => {
   );
 };
 
-const AlertList = ({ title }: AlertResponse) => {
-  return <s.Meta bold>{title}</s.Meta>;
-};
 export default MainPage;
 
 {
