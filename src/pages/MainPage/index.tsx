@@ -86,7 +86,7 @@ const alerts = [
     title: "2023-2학기 수강신청 유의사항 안내5",
     content: "소프트웨어학부 수강신청 공지사항 및 참고 사항 안내\n\n...",
     image: testImg,
-    date: "2024-01-03T13:25:05Z",
+    date: "2024-01-05T13:25:05Z",
     major_advisor: "SOFTWARE",
     like: 87,
     dislike: 8,

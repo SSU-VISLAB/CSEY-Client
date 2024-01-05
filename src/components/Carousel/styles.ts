@@ -7,6 +7,6 @@ export const Wrapper = styled.div`
   align-items: center;
   overflow: auto;
   margin-bottom: 20px;
-  padding-left: 265px;
+  padding-left: 300px;
 `;
 

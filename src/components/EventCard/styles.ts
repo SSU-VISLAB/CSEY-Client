@@ -8,9 +8,9 @@ export const EventCardWrapper = styled(Paper)<{bgColor: boolean}>`
   background-color: ${props => props.bgColor ? "#FEEBB6" : "#CEE6FF"};
   border-radius: 0.3em;
   display: flex;
-  width: 157px;
-  height: 227px;
-  margin-right: 1rem;
+  width: 145px;
+  height: 200px;
+  margin-right: 0.5rem;
 `;
 
 export const EventDday = styled.div<{bgColor: boolean}>`
@@ -18,18 +18,17 @@ export const EventDday = styled.div<{bgColor: boolean}>`
   z-index: 10;
   position: absolute;
   top: 0;
-  left: 10;
-  padding-right: 1.4vh;
+  padding-right: 0.8vh;
   padding-bottom: 0.6vh;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  border-radius: 5px;
+  border-bottom-right-radius: 8px;
   margin-top: 1vh;
   font-family: var(--font-넥슨Lv1고딕);
-  font-size: 3vh;
+  font-size: 2vh;
   font-weight: 700;
 `;
 
@@ -40,15 +39,15 @@ export const EventCardContants = styled.div`
   width: auto;
   height: auto;
 
-  margin: 8px;
+  margin-top: 8px;
 `;
 
 export const EventPost = styled.img`
   /* background-color: rgba(255, 0, 0, 0.6); */
   flex-shrink: 0;
 
-  width: 142px;
-  height: 170px;
+  width: 148px;
+  height: 148px;
 `;
 
 export const BelowEventPost = styled.div`
