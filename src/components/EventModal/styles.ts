@@ -4,7 +4,10 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 75%;
+  /* height: 75%; */
+  background-color: white;
+  border-radius: 13px;
 `;
 
 export const Container = styled.div`
@@ -59,6 +62,7 @@ export const Icon = styled.div`
 export const DateContainer = styled.div`
   display: flex;
   flex-direction: row;
+  margin-bottom: 1.2vh;
 `;
 
 export const Dday = styled.div`
@@ -71,4 +75,5 @@ export const Duration = styled.div`
 
 export const ContentsWrapper = styled.div`
   background-color: #d1d1d1;
+  padding: 5px;
 `;

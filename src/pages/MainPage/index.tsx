@@ -38,6 +38,36 @@ export interface IEventCardProps {
 
 const alerts = [
   {
+    id: 2,
+    title: "종료된 행사 테스트",
+    content: "첫 event 내용",
+    image: testImg,
+    start: "2023-09-23T00:00:00.000Z",
+    end: "2023-09-24T00:00:00.000Z",
+    major_advisor: "컴퓨터",
+    like: 0,
+    dislike: 0,
+    expired: true,
+    calendar_title: "test title",
+    calendar_content: null,
+    calendar_show: true,
+  },
+  {
+    id: 3,
+    title: "1001 ~ 24년에 끝나는 행사",
+    content: "1241",
+    image: testImg,
+    start: "2023-10-01T00:00:00.000Z",
+    end: "2024-02-07T00:00:00.000Z",
+    major_advisor: "컴퓨터",
+    like: 101,
+    dislike: 30,
+    expired: false,
+    calendar_title: null,
+    calendar_content: null,
+    calendar_show: false,
+  },
+  {
     id: 23,
     title: "23-2학기 전체수강신청 공지 안내1",
     content: "안녕하세요 학부사무실입니다.\n23-2학기 전체 수강신청...",
@@ -142,7 +172,7 @@ const MainPage = () => {
             <s.Meta>지금은 중요 공지가 없습니다.</s.Meta>
           ) : (
             <s.AlertList key={currentAlertIndex}>
-                {alerts[currentAlertIndex].title}
+              {alerts[currentAlertIndex].title}
             </s.AlertList>
           )}
           <Link to="/Notification">
