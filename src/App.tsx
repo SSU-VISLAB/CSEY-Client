@@ -8,6 +8,9 @@ import MainPage from "./pages/MainPage";
 import { AlarmSetting, Setting } from "./pages/MyPage";
 import NoticePage from "./pages/NoticePage";
 import TerracePage from "./pages/TerracePage";
+import { getNoticeByIdQuery, getNoticesQuery } from "./api/query/notice";
+import { getEventById } from "./api/axios/event";
+import { getEventByIdQuery } from "./api/query/event";
 
 function App() {
   const client = useQueryClient();
@@ -17,6 +20,9 @@ function App() {
     getUserInfoQuery();
   }
   console.log("APP rerender")
+  // getNoticesQuery();
+  // console.log(getNoticeByIdQuery(2));
+  // console.log(getEventByIdQuery(30));
   return (
     <Div>
       <Routes>
