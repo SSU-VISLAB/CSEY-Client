@@ -4,10 +4,12 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 75%;
-  /* height: 75%; */
+  width: 60%;
+  height: 90%;
   background-color: white;
   border-radius: 13px;
+  margin: 0 auto;
+  margin-top: 5%;
 `;
 
 export const Container = styled.div`
@@ -15,13 +17,15 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: center;  
   width: 90%;
-  margin-top: 30px;
+  margin-top: 7.5%;
 `;
 
-export const CloseBtnWrapper = styled.div`
+export const CloseBtn = styled.img`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 6%;
+  right: 21%;
+  z-index: 999;
+  width: 2%;
   cursor: pointer;
 `;
 

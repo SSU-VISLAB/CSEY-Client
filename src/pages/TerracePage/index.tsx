@@ -7,7 +7,6 @@ const TerracePage = () => {
   return (
     <s.Wrapper>
       <HeaderLogo/>
-      <EventModal imgURL = {tmpImg} title={"컴퓨터학부 간식행사"} startDate={"20220921"} content={"hello"} dday={3}/>
     </s.Wrapper>
   );
 };

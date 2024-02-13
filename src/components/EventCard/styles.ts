@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { Paper } from "@mui/material";
+import yellow from "@mui/material/colors/yellow";
 
 export const EventCardWrapper = styled(Paper)<{bgColor: boolean}>`
   position: relative;
@@ -11,6 +12,7 @@ export const EventCardWrapper = styled(Paper)<{bgColor: boolean}>`
   width: 145px;
   height: 200px;
   margin-right: 0.5rem;
+  cursor: pointer;
 `;
 
 export const EventDday = styled.div<{bgColor: boolean}>`

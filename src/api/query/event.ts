@@ -5,7 +5,7 @@ export const getEventsQuery = () => {
     const queryClient = useQueryClient();   //캐싱데이터 저장공간
     const eventsQuery = useQuery({
         queryKey: ["events"],
-        queryFn: getEvents,
+        queryFn: () => getEvents(),
     })
 
     console.log(eventsQuery.data)
@@ -19,5 +19,6 @@ export const getEventByIdQuery = (targetId) => {
         refetchInterval: 5000,
         refetchIntervalInBackground: true,
     })
+    // if (eventByIdQuery.isPending) return 
     return eventByIdQuery;
 }

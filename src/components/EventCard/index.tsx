@@ -1,35 +1,36 @@
 import React, { useState } from "react";
-import { IEventCardProps } from "../../pages/MainPage";
-import { ReactComponent as BookmarkIcon } from "../../assets/Icons/BookmarkIcon.svg";
-import { ReactComponent as UnBookmarkIcon } from "../../assets/Icons/UnBookmarkIcon.svg";
-import { ReactComponent as HateIcon } from "../../assets/Icons/HateIcon.svg";
+// import { ReactComponent as BookmarkIcon } from "../../assets/Icons/BookmarkIcon.svg";
+// import { ReactComponent as UnBookmarkIcon } from "../../assets/Icons/UnBookmarkIcon.svg";
+// import { ReactComponent as HateIcon } from "../../assets/Icons/HateIcon.svg";
 import BookmarkOnSrc from "../../assets/Icons/BookmarkOn.png";
 import BookmarkOffSrc from "../../assets/Icons/BookmarkOff.png";
 import * as s from "./styles";
 import EventModal from "../EventModal";
+import { EventType } from "../../types";
+import { Box, Modal } from "@mui/material";
 
-const EventCard = ({
-  date,
-  image,
-  major,
+// react 컴포넌트는 무조건 매개변수를 하나 갖고 있음(props)
+// props의 속성은 자유자재로 가능
+// props의 속성의 개수만큼 jsx에서 속성을 부여할 수 있음
+const EventCard = ({ event: {
+  id,
   title,
-  isBookmarked,
-}: IEventCardProps) => {
+  image,
+  start,
+  major_advisor
+} }: { event: EventType }) => {
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const handleModalOpen = () => setIsModalOpen(true);
+  const handleModalClose = () => setIsModalOpen(false);
   const handleBookmarkClick = (event) => {
     event.stopPropagation(); // 이벤트 버블링 방지
     setIsBookmark((prevState) => !prevState);
   };
 
-  const handleShowModal = () => {
-    setShowModal(true);
-  };
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+
   const curDate = new Date();
-  const evtDate = new Date(date);
+  const evtDate = new Date(start);
   const leftDate = Math.ceil(
     (evtDate.getTime() - curDate.getTime()) / (1000 * 60 * 60 * 24),
   );
@@ -37,16 +38,16 @@ const EventCard = ({
   return (
     <>
       {leftDate >= 0 && (
-        <s.EventCardWrapper elevation={5} bgColor={WrapperColor}>
+        <s.EventCardWrapper onClick={handleModalOpen} elevation={5} bgColor={WrapperColor}>
           <s.EventDday bgColor={WrapperColor}>
             {leftDate <= 1 ? "D-day" : `D-${leftDate}`}
           </s.EventDday>
           <s.EventCardContants>
-            <s.EventPost src={image} />
+            <s.EventPost src={`http://localhost:3000/events/${image}`} />
             <s.BelowEventPost>
               <s.EventInfo>
                 <s.BelongDepartment>
-                  {major === "COMPUTER"
+                  {major_advisor === "컴퓨터"
                     ? "숭실대학교 컴퓨터학부"
                     : "숭실대학교 소프트웨어학부"}
                 </s.BelongDepartment>
@@ -62,17 +63,9 @@ const EventCard = ({
           </s.EventCardContants>
         </s.EventCardWrapper>
       )}
-      {showModal && (
-        <EventModal
-          title={title}
-          imgURL={image}
-          startDate={date}
-          endDate={date}
-          content={title}
-          dday={leftDate.toString()}
-          onClose={handleCloseModal}
-        />
-      )}
+      <Modal open={isModalOpen} onClose={handleModalClose} >
+        <EventModal eventId={id} dday={leftDate} />
+      </Modal>
     </>
   );
 };
