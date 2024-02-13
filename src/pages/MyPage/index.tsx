@@ -1,6 +1,17 @@
+import { useQueryClient } from "@tanstack/react-query";
+import { memo } from "react";
+import { ArrowLeft, Settings, User } from "react-feather";
+import { useNavigate } from "react-router-dom";
+import { kakaoLogout } from "../../api/axios";
+import { setAlarmMutation } from "../../api/query/alarm";
+import { getUserInfoQuery } from "../../api/query/user";
+import * as BottomNav from "../../components/BottomNavbar";
+import HeaderLogo from "../../components/HeaderLogo";
+import { Login } from "../../components/Login";
+import { AlarmGroup } from "../../context/setting";
 import {
   Arrow,
-  CheckboxIcon,
+  Checkbox,
   Content,
   ContentGroup,
   ContentRow,
@@ -9,12 +20,10 @@ import {
   Header,
   Icon,
   Meta,
-  Title,
   SettingList,
+  Title,
 } from "./styles";
-import * as BottomNav from "../../components/BottomNavbar";
-import { Settings, ArrowLeft } from "react-feather";
-import HeaderLogo from "../../components/HeaderLogo";
+import { getAlarmSettingContents } from "./utils";
 
 export type SettingCardHeader = {
   icon?: BottomNav.Icon;
@@ -24,44 +33,105 @@ export type SettingCardHeader = {
 export interface SettingCardContents {
   meta: string;
   description?: string;
-  onClick?: () => void;
+  eventHandler?: (e?) => void;
+  value?: any;
 }
 
-export interface SettingCardAlarm extends SettingCardContents {
+export interface AlarmSettingCardContents extends SettingCardContents {
   hasCheck?: boolean; // true: 체크박스 표시, false: └─> 표시
   child?: SettingCardContents[];
 }
 
-export type SettingCardData = {
+export type SettingCardData<T extends SettingCardContents> = {
   header: SettingCardHeader;
-  content?: SettingCardAlarm[];
+  contents?: T[];
+  hasLogin?: boolean;
 };
 
 /** My - 설정페이지 */
-const Setting = ({ dataArray }: { dataArray: SettingCardData[] }) => {
+const Setting = () => {
+  const info = getUserInfoQuery();
+  console.log("userData", info.data)
+  const userData = info.data?.user;
+  const navigate = useNavigate();
+  const client = useQueryClient();
+  const settingContents = ([
+    {
+      header: { title: userData?.name || "로그인 해주세요", icon: User },
+    },
+    userData && {
+      header: { title: "Account", icon: Settings },
+      contents: [
+        {
+          meta: "학적 정보",
+          description: userData?.major || "학적 정보 미등록",
+        },
+        {
+          meta: "로그아웃",
+          eventHandler: () => (
+            alert("로그아웃"), kakaoLogout(client, navigate)
+          ),
+        },
+        { meta: "계정 탈퇴" },
+      ],
+    },
+    {
+      header: { title: "Settings", icon: Settings },
+      contents: [
+        { meta: "테마", description: "시스템 기본값" },
+        userData && {
+          meta: "알림 설정",
+          eventHandler: () => navigate("/My/Alarm"),
+        },
+      ].filter((v) => v),
+    },
+    {
+      header: { title: "Guide", icon: Settings },
+      contents: [
+        {
+          meta: "앱 버전",
+          description: "v.10.0",
+          eventHandler: () => alert("앱 버전 클릭!"),
+        },
+        { meta: "문의하기", description: "nabest@vis.ssu.ac.kr" },
+        { meta: "개발자 정보" },
+        { meta: "서비스 이용 약관" },
+        { meta: "개인정보 처리방침" },
+        { meta: "오픈소스 라이센스" },
+      ],
+    },
+  ] as SettingCardData<SettingCardContents>[]
+  ).filter((v) => v)
   return (
     <SettingList>
-      <HeaderLogo/>
-      {dataArray.map((data, i) => (
+      <HeaderLogo />
+      {settingContents.map((data, i) => (
         <ItemList
           key={i}
           header={data.header}
-          content={data?.content}
-        ></ItemList>
+          contents={data?.contents}
+          hasLogin={!i && !userData}
+        />
       ))}
     </SettingList>
   );
 };
 
-const ItemList = ({ header, content }: SettingCardData) => {
+const ItemList = ({
+  header,
+  contents: content,
+  hasLogin,
+}: SettingCardData<SettingCardContents>) => {
   return (
     <Group elevation={4}>
-      <ItemHeader title={header.title} HeaderIcon={header.icon} bold />
-      {!content || (
+      <ItemHeader title={header.title} HeaderIcon={header.icon} bold>
+        {hasLogin && <Login />}
+      </ItemHeader>
+      {content && (
         <ContentGroup>
           {content.map((v, i) => (
             <ContentRow key={i}>
-              <Content elevation={2} onClick={v.onClick}>
+              <Content elevation={2} onClick={v.eventHandler}>
                 <Meta bold>{v.meta}</Meta>
                 <Description bold>{v?.description}</Description>
               </Content>
@@ -74,19 +144,15 @@ const ItemList = ({ header, content }: SettingCardData) => {
 };
 
 /** My - 알림 설정 페이지 */
-const AlarmSetting = ({
-  dataArray,
-  goBack,
-}: {
-  dataArray: SettingCardData[];
-  goBack: () => void;
-}) => {
+const AlarmSetting = () => {
+  const navigate = useNavigate();
+  const alarmGroups = getAlarmSettingContents();
   return (
     <SettingList>
-      <HeaderLogo/>
+      <HeaderLogo />
       <ContentRow>
         <Icon>
-          <ArrowLeft size={24} onClick={() => goBack()} />
+          <ArrowLeft size={24} onClick={() => navigate("/My")} />
         </Icon>
         <Icon>
           <Settings size={24} />
@@ -96,59 +162,80 @@ const AlarmSetting = ({
         </Title>
       </ContentRow>
 
-      {dataArray.map((data, i) => (
-        <AlarmSettingList
+      {alarmGroups?.map((alarmGroup, i) => (
+        <AlarmSettingGroup
           key={i}
-          header={data.header}
-          content={data?.content}
-        ></AlarmSettingList>
+          group={alarmGroup}
+        ></AlarmSettingGroup>
       ))}
     </SettingList>
   );
 };
 
-const AlarmSettingList = ({ header, content }: SettingCardData) => {
-  content = content.flatMap((v) => (v.child ? [v, ...v.child] : v));
+const AlarmSettingGroup = memo(({ group }: { group: AlarmGroup }) => {
+  let { header, contents } = group;
+  contents = contents.flatMap((v) => (v.child ? [v, ...v.child] : v));
+  console.log('rerender', header);
+
+  const mutation = setAlarmMutation();
+  group.setMutations(mutation);
+
+  const { isError, isPending, variables } = mutation;
+  const key = Object.keys(variables)[0];
+  if (isError) {
+    group.findContent(key).value = !variables[key];
+  }
+  if (isPending) {
+    group.findContent(key).value = variables[key];
+  }
   return (
     <Group elevation={4}>
       <ItemHeader
         title={header.title}
-        HeaderIcon={undefined}
-        padding={false}
-        bold={true}
+        bold
       />
       <ContentGroup>
-        {content.map((v) => {
+        {contents.map((v) => {
           if (v.hasCheck)
             return (
-              <ContentCheck onClick={v.onClick} meta={v.meta} key={v.meta} />
+              <ContentCheck
+                key={v.meta}
+                meta={v.meta}
+                value={v.value}
+                eventHandler={v.eventHandler}
+              />
             );
           else
             return (
               <ContentChild
-                onClick={v.onClick}
+                key={v.meta}
                 meta={v.meta}
                 description={v.description}
-                key={v.meta}
+                eventHandler={v.eventHandler}
               />
             );
         })}
       </ContentGroup>
     </Group>
   );
-};
+}, (prev, next) => {
+  const nextContents = next.group.contents;
+  return prev.group.contents.every((content, index) => content.value == nextContents[index].value)
+});
 
 /** My - 공통 컴포넌트, {아이콘} {제목} 표시 */
-const ItemHeader = ({
+const ItemHeader = memo(({
   title,
   HeaderIcon,
   padding,
   bold,
+  children,
 }: {
   title: string;
-  HeaderIcon: BottomNav.Icon;
+  HeaderIcon?: BottomNav.Icon;
   padding?: boolean;
   bold: boolean;
+  children?;
 }) => {
   return (
     <Header>
@@ -156,12 +243,17 @@ const ItemHeader = ({
       <Title padding={padding} bold={bold}>
         {title}
       </Title>
+      {children}
     </Header>
   );
-};
+});
 
 /** 체크버튼 있는 단일 요소인 alarm설정 */
-const ContentCheck = ({ onClick, meta }: SettingCardAlarm) => {
+const ContentCheck = ({
+  eventHandler,
+  meta,
+  value,
+}: AlarmSettingCardContents) => {
   const sx = {
     "& .MuiSvgIcon-root": {
       fontSize: "2.5vh",
@@ -174,20 +266,24 @@ const ContentCheck = ({ onClick, meta }: SettingCardAlarm) => {
   };
   return (
     <ContentRow>
-      <Content elevation={2} onClick={onClick}>
+      <Content elevation={2}>
         <Meta>{meta}</Meta>
       </Content>
-      <CheckboxIcon sx={sx} />
+      <Checkbox sx={sx} checked={value} onChange={eventHandler} />
     </ContentRow>
   );
 };
 
 /** 자식 요소인 alarm설정 */
-const ContentChild = ({ onClick, meta, description }: SettingCardAlarm) => {
+const ContentChild = ({
+  eventHandler,
+  meta,
+  description,
+}: AlarmSettingCardContents) => {
   return (
     <ContentRow>
       <Arrow />
-      <Content elevation={2} onClick={onClick}>
+      <Content elevation={2} onClick={eventHandler}>
         <Meta>{meta}</Meta>
         <Description bold>{description}</Description>
       </Content>
@@ -195,4 +291,5 @@ const ContentChild = ({ onClick, meta, description }: SettingCardAlarm) => {
   );
 };
 
-export { Setting, AlarmSetting };
+export { AlarmSetting, Setting };
+

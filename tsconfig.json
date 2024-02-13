@@ -16,8 +16,6 @@
     "jsx": "react-jsx"
   },
   "include": ["src"],
-  "files": [
-    "custom.d.ts"
-  ],
+  "files": ["custom.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
