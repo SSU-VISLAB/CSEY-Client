@@ -27,7 +27,7 @@ const MainPage = () => {
     }
     return () => clearInterval(interval);
   }, []);
-  console.log({events})
+  console.log({ events });
   return (
     <s.MainList>
       <HeaderLogo />
@@ -38,9 +38,11 @@ const MainPage = () => {
             (alerts.length === 0 ? (
               <s.Meta>지금은 중요 공지가 없습니다.</s.Meta>
             ) : (
-              <s.AlertList key={currentAlertIndex}>
-                {alerts[currentAlertIndex].title}
-              </s.AlertList>
+              <s.StyledLink to="/Notification" text-decoration="none">
+                <s.AlertList key={currentAlertIndex}>
+                  {alerts[currentAlertIndex].title}
+                </s.AlertList>
+              </s.StyledLink>
             ))}
           <Link to="/Notification">
             <s.More>
@@ -53,7 +55,9 @@ const MainPage = () => {
       <EventCardCarousel>
         {/* {!isEventsPending &&
           (events?.map((event) => <EventCard key={event.id} event={event} />))} */}
-        {events?.map((event) => <EventCard key={event.id} event={event} />)}
+        {events?.map((event) => (
+          <EventCard key={event.id} event={event} />
+        ))}
       </EventCardCarousel>
       <RCalendar />
     </s.MainList>

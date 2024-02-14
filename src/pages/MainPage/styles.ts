@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
-import { keyframes } from '@emotion/react';
+import { keyframes } from "@emotion/react";
 import { Paper } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export const MainList = styled.div`
   width: 95vw;
@@ -42,15 +43,17 @@ const fadeInUp = keyframes`
 `;
 export const AlertList = styled.div`
   animation: ${fadeInUp} 0.5s ease-in-out;
-  font-size: 1.8vh;
+  font-size: 2vh;
   font-weight: 800;
-  /* font-weight: ${(props: text) => (props.bold ? "bold" : "400")}; */
   line-height: 1.5;
+
   /* 텍스트 자르기 스타일 추가 */
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 90%;
+  max-width: 100%;
+  cursor: pointer;
+  color: black;
 `;
 
 const AlertCard = {
@@ -126,3 +129,8 @@ export const {
   Activate,
   SlideAnimation,
 } = AlertCard;
+
+export const StyledLink = styled(Link)`
+  text-decoration: none; // 밑줄 제거
+  color: inherit; // 링크 색상을 상속받아 변경하지 않음
+`;
