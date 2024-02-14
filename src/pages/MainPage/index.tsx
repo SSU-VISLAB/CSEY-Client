@@ -8,33 +8,40 @@ import EventCardCarousel from "../../components/Carousel";
 import EventCard from "../../components/EventCard";
 import { getEventsQuery } from "../../api/query/event";
 import { getAlertsQuery } from "../../api/query/alert";
+import { AlertType } from "../../types";
 
 const MainPage = () => {
-  const {data: alerts} = getAlertsQuery();
-  const {data: events} = getEventsQuery();
+  const { data: alerts, isPending: isAlertsPending } = getAlertsQuery();
+  const { data: events, isPending: isEventsPending } = getEventsQuery();
   const [showRedDot, setShowRedDot] = useState<boolean>(true);
   const [currentAlertIndex, setCurrentAlertIndex] = useState(0);
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentAlertIndex((prevIndex) => (prevIndex + 1) % alerts?.length);
-    }, 5000);
+    let interval;
+    if (!isAlertsPending) {
+      interval = setInterval(() => {
+        setCurrentAlertIndex(
+          (prevIndex) => (prevIndex + 1) % (alerts as AlertType[])?.length,
+        );
+      }, 5000);
+    }
     return () => clearInterval(interval);
   }, []);
-
-  console.log({events});
+  console.log({events})
   return (
     <s.MainList>
       <HeaderLogo />
       <s.Group>
         <s.Header>
           <s.Icon src={AlertSrc} alt="Alert" />
-          {!alerts ? (
-            <s.Meta>지금은 중요 공지가 없습니다.</s.Meta>
-          ) : (
-            <s.AlertList key={currentAlertIndex}>
-              {alerts[currentAlertIndex].title}
-            </s.AlertList>
-          )}
+          {!isAlertsPending &&
+            (alerts.length === 0 ? (
+              <s.Meta>지금은 중요 공지가 없습니다.</s.Meta>
+            ) : (
+              <s.AlertList key={currentAlertIndex}>
+                {alerts[currentAlertIndex].title}
+              </s.AlertList>
+            ))}
           <Link to="/Notification">
             <s.More>
               {" "}
@@ -44,9 +51,9 @@ const MainPage = () => {
         </s.Header>
       </s.Group>
       <EventCardCarousel>
-        {events?.map((event) => (
-          !event.expired && <EventCard key={event.id} event={event}/>
-        ))}
+        {/* {!isEventsPending &&
+          (events?.map((event) => <EventCard key={event.id} event={event} />))} */}
+        {events?.map((event) => <EventCard key={event.id} event={event} />)}
       </EventCardCarousel>
       <RCalendar />
     </s.MainList>

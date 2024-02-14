@@ -29,13 +29,13 @@ const EventCard = ({ event: {
     setIsBookmark((prevState) => !prevState);
   };
 
-
   const curDate = new Date();
   const evtDate = new Date(start);
   const leftDate = Math.ceil(
     (evtDate.getTime() - curDate.getTime()) / (1000 * 60 * 60 * 24),
   );
   const WrapperColor = leftDate <= 1 ? true : false;
+  console.log("안녕하세요 !!!!!!!!!")
   return (
     <>
       {leftDate >= 0 && (
