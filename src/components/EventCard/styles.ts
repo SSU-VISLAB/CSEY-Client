@@ -2,11 +2,11 @@ import styled from "@emotion/styled";
 import { Paper } from "@mui/material";
 import yellow from "@mui/material/colors/yellow";
 
-export const EventCardWrapper = styled(Paper)<{bgColor: boolean}>`
+export const EventCardWrapper = styled(Paper)<{bgcolor: boolean}>`
   position: relative;
   padding: 0.2em 0.5em 0 0.5em;
   margin: 1.5vh 0;
-  background-color: ${props => props.bgColor ? "#FEEBB6" : "#CEE6FF"};
+  background-color: ${props => props.bgcolor ? "#FEEBB6" : "#CEE6FF"};
   border-radius: 0.3em;
   display: flex;
   width: 145px;
@@ -15,8 +15,8 @@ export const EventCardWrapper = styled(Paper)<{bgColor: boolean}>`
   cursor: pointer;
 `;
 
-export const EventDday = styled.div<{bgColor: boolean}>`
-  background-color: ${props => props.bgColor ? "#FEEBB6" : "#CEE6FF"};
+export const EventDday = styled.div<{bgcolor: boolean}>`
+  background-color: ${props => props.bgcolor ? "#FEEBB6" : "#CEE6FF"};
   z-index: 10;
   position: absolute;
   top: 0;

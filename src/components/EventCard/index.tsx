@@ -8,6 +8,7 @@ import * as s from "./styles";
 import EventModal from "../EventModal";
 import { EventType } from "../../types";
 import { Box, Modal } from "@mui/material";
+import tmpSrc from "../../assets/tmp/짱구.jpeg"
 
 // react 컴포넌트는 무조건 매개변수를 하나 갖고 있음(props)
 // props의 속성은 자유자재로 가능
@@ -38,12 +39,13 @@ const EventCard = ({ event: {
   return (
     <>
       {leftDate >= 0 && (
-        <s.EventCardWrapper onClick={handleModalOpen} elevation={5} bgColor={WrapperColor}>
-          <s.EventDday bgColor={WrapperColor}>
+        <s.EventCardWrapper onClick={handleModalOpen} elevation={5} bgcolor={WrapperColor}>
+          <s.EventDday bgcolor={WrapperColor}>
             {leftDate <= 1 ? "D-day" : `D-${leftDate}`}
           </s.EventDday>
           <s.EventCardContants>
-            <s.EventPost src={`http://localhost:3000/events/${image}`} />
+            <s.EventPost src={tmpSrc} />
+            {/* <s.EventPost src={`http://localhost:8080/events/${image}`} /> */}
             <s.BelowEventPost>
               <s.EventInfo>
                 <s.BelongDepartment>

@@ -1,16 +1,16 @@
 import React from "react";
 import * as s from "./styles";
-import { ReactComponent as CloseIcon } from "../../assets/Icons/CloseIcon.svg";
-import { ReactComponent as BookmarkIcon } from "../../assets/Icons/BookmarkIcon.svg";
-import { ReactComponent as LikeIcon } from "../../assets/Icons/LikeIcon.svg";
-import { ReactComponent as HateIcon } from "../../assets/Icons/HateIcon.svg";
-import { ReactComponent as ShareIcon } from "../../assets/Icons/ShareIcon.svg";
-import { getEventByIdQuery } from "../../api/query/event";
+import LikeIcon from "../../assets/Icons/LikeIcon.png";
+import HateIcon from "../../assets/Icons/HateIcon.png";
+import ShareIcon from "../../assets/Icons/ShareIcon.png";
 import CloseBtnSrc from "../../assets/Icons/modalCloseBtn.png"
+import { getEventByIdQuery } from "../../api/query/event";
+import tmpSrc from "../../assets/tmp/짱구.jpeg"
+
 type EventModalProps = {
   eventId: number, dday: number
 }
-const EventModal = ({ eventId, dday }: EventModalProps) => {
+const EventModal = React.forwardRef(({ eventId, dday }: EventModalProps, ref) => {
   const { data, isPending } = getEventByIdQuery(eventId);
   if (isPending) return (<>"Loading"</>);
   const {
@@ -26,7 +26,8 @@ const EventModal = ({ eventId, dday }: EventModalProps) => {
       <s.CloseBtn src={CloseBtnSrc}/>
       <s.Container>
         <s.Title>{title}</s.Title>
-        <s.ImgContainer src={`http://localhost:3000/events/${image}`} />
+        <s.ImgContainer src={tmpSrc} />
+        {/* <s.ImgContainer src={`http://localhost:3000/events/${image}`} /> */}
         <s.IconContainer>
           <s.LeftIcons>
             <s.Icon>
@@ -42,7 +43,7 @@ const EventModal = ({ eventId, dday }: EventModalProps) => {
 
           <s.RightIcon>
             <s.Icon>
-              <BookmarkIcon />
+              {/* <BookmarkIcon /> */}
             </s.Icon>
           </s.RightIcon>
         </s.IconContainer>
@@ -58,6 +59,6 @@ const EventModal = ({ eventId, dday }: EventModalProps) => {
       </s.Container>
     </s.Wrapper>
   );
-};
+});
 
 export default EventModal;

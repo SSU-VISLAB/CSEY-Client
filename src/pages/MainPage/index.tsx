@@ -45,7 +45,7 @@ const MainPage = () => {
       </s.Group>
       <EventCardCarousel>
         {events?.map((event) => (
-          !event.expired && <EventCard event={event}/>
+          !event.expired && <EventCard key={event.id} event={event}/>
         ))}
       </EventCardCarousel>
       <RCalendar />
