@@ -16,7 +16,7 @@ const MainPage = () => {
   const [currentAlertIndex, setCurrentAlertIndex] = useState(0);
   useEffect(() => {
     const interval = setInterval(() => {
-      // setCurrentAlertIndex((prevIndex) => (prevIndex + 1) % alerts.length());
+      setCurrentAlertIndex((prevIndex) => (prevIndex + 1) % alerts?.length);
     }, 5000);
     return () => clearInterval(interval);
   }, []);

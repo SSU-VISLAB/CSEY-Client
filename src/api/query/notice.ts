@@ -1,9 +1,10 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getNoticeById, getNotices } from "../axios/notice";
+import { NoticeType } from "../../types";
 
 export const getNoticesQuery = () => {
     const queryClient = useQueryClient();   //캐싱데이터 저장공간
-    const noticesQuery = useQuery({
+    const noticesQuery = useQuery<NoticeType[]>({
         queryKey: ["notices"],
         queryFn: getNotices,
     })

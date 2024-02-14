@@ -1,9 +1,10 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getEventById, getEvents } from "../axios/event";
+import { EventType } from "../../types";
 
 export const getEventsQuery = () => {
     const queryClient = useQueryClient();   //캐싱데이터 저장공간
-    const eventsQuery = useQuery({
+    const eventsQuery = useQuery<EventType[]>({
         queryKey: ["events"],
         queryFn: () => getEvents(),
     })

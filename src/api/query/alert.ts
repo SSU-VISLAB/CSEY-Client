@@ -1,9 +1,10 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAlertById, getAlerts } from "../axios/alert";
+import { AlertType } from "../../types";
 
 export const getAlertsQuery = () => {
     const queryClient = useQueryClient();   // 캐싱데이터 저장공간
-    const alertsQuery = useQuery({
+    const alertsQuery = useQuery<AlertType[]>({
         queryKey: ["alerts"],
         queryFn: getAlerts,
     });
