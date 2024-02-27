@@ -6,11 +6,13 @@ import ShareIcon from "../../assets/Icons/ShareIcon.png";
 import CloseBtnSrc from "../../assets/Icons/modalCloseBtn.png"
 import { getEventByIdQuery } from "../../api/query/event";
 import tmpSrc from "../../assets/tmp/짱구.jpeg"
+import { formatDate } from "../NoticeList";
 
 type EventModalProps = {
-  eventId: number, dday: number
+  eventId: number, dday: number,
+  onClose: () => void
 }
-const EventModal = React.forwardRef(({ eventId, dday }: EventModalProps, ref) => {
+const EventModal = React.forwardRef(({ eventId, dday, onClose }: EventModalProps, ref) => {
   const { data, isPending } = getEventByIdQuery(eventId);
   if (isPending) return (<>"Loading"</>);
   const {
@@ -23,39 +25,30 @@ const EventModal = React.forwardRef(({ eventId, dday }: EventModalProps, ref) =>
     dislike } = data;
   return (
     <s.Wrapper>
-      <s.CloseBtn src={CloseBtnSrc}/>
+      <s.CloseBtn src={CloseBtnSrc} onClick={onClose}/>
       <s.Container>
         <s.Title>{title}</s.Title>
         <s.ImgContainer src={tmpSrc} />
         {/* <s.ImgContainer src={`http://localhost:3000/events/${image}`} /> */}
         <s.IconContainer>
           <s.LeftIcons>
-            <s.Icon>
-              <LikeIcon />
-            </s.Icon>
-            <s.Icon>
-              <HateIcon />
-            </s.Icon>
-            <s.Icon>
-              <ShareIcon />
-            </s.Icon>
+            <s.Icon src={LikeIcon}/>
+            <s.Icon src={HateIcon}/>
+            <s.Icon src={ShareIcon}/>
           </s.LeftIcons>
 
           <s.RightIcon>
-            <s.Icon>
-              {/* <BookmarkIcon /> */}
-            </s.Icon>
           </s.RightIcon>
         </s.IconContainer>
 
         <s.DateContainer>
-          <s.Dday>D-{dday}</s.Dday>
+          <s.Dday>{dday < 1 ? "D-day" : `D-${dday}`}</s.Dday>
           <s.Duration>
-            {start} ~ {end}
+            {formatDate(start)} ~ {formatDate(end)}
           </s.Duration>
         </s.DateContainer>
 
-        <s.ContentsWrapper>{content}</s.ContentsWrapper>
+        <s.ContentsWrapper dangerouslySetInnerHTML={{ __html: content }}/>
       </s.Container>
     </s.Wrapper>
   );

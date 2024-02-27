@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-// import { ReactComponent as BookmarkIcon } from "../../assets/Icons/BookmarkIcon.svg";
-// import { ReactComponent as UnBookmarkIcon } from "../../assets/Icons/UnBookmarkIcon.svg";
-// import { ReactComponent as HateIcon } from "../../assets/Icons/HateIcon.svg";
 import BookmarkOnSrc from "../../assets/Icons/BookmarkOn.png";
 import BookmarkOffSrc from "../../assets/Icons/BookmarkOff.png";
 import * as s from "./styles";
@@ -18,6 +15,7 @@ const EventCard = ({ event: {
   title,
   image,
   start,
+  end,
   major_advisor
 } }: { event: EventType }) => {
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
@@ -34,11 +32,15 @@ const EventCard = ({ event: {
   const leftDate = Math.ceil(
     (evtDate.getTime() - curDate.getTime()) / (1000 * 60 * 60 * 24),
   );
+  const evtEndDate = new Date(end);
+  const leftEndDate = Math.ceil(
+    (evtEndDate.getTime() - curDate.getTime()) / (1000 * 60 * 60 * 24),
+  );
   const WrapperColor = leftDate <= 1 ? true : false;
-  console.log("안녕하세요 !!!!!!!!!")
+  console.log(leftDate, leftEndDate)
   return (
     <>
-      {leftDate >= 0 && (
+      {leftEndDate >= 0 && (
         <s.EventCardWrapper onClick={handleModalOpen} elevation={5} bgcolor={WrapperColor}>
           <s.EventDday bgcolor={WrapperColor}>
             {leftDate <= 1 ? "D-day" : `D-${leftDate}`}
@@ -66,7 +68,7 @@ const EventCard = ({ event: {
         </s.EventCardWrapper>
       )}
       <Modal open={isModalOpen} onClose={handleModalClose} >
-        <EventModal eventId={id} dday={leftDate} />
+        <EventModal eventId={id} dday={leftDate} onClose={handleModalClose}/>
       </Modal>
     </>
   );

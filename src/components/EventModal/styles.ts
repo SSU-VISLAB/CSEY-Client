@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 
 export const Wrapper = styled.div`
+  font-family: var(--font-바른히피);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,6 +31,8 @@ export const CloseBtn = styled.img`
 `;
 
 export const Title = styled.div`
+  font-size: 2vh;
+  font-weight: 700;
   background-color: #d1d1d1;
   font-size: 25px;
   padding-left: 10px;
@@ -47,6 +50,7 @@ export const IconContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 export const LeftIcons = styled.div`
@@ -57,9 +61,14 @@ export const LeftIcons = styled.div`
 `;
 
 export const RightIcon = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
-export const Icon = styled.div`
+export const Icon = styled.img`
+  width: 30px;
+  margin-right: 8px;
   cursor: pointer;
 `;
 

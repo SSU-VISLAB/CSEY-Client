@@ -34,11 +34,11 @@ const MainPage = () => {
       <s.Group>
         <s.Header>
           <s.Icon src={AlertSrc} alt="Alert" />
-          {!isAlertsPending &&
+          {!isAlertsPending && alerts && 
             (alerts.length === 0 ? (
               <s.Meta>지금은 중요 공지가 없습니다.</s.Meta>
             ) : (
-              <s.StyledLink to="/Notification" text-decoration="none">
+              <s.StyledLink to="/Notification">
                 <s.AlertList key={currentAlertIndex}>
                   {alerts[currentAlertIndex].title}
                 </s.AlertList>
@@ -52,13 +52,11 @@ const MainPage = () => {
           </Link>
         </s.Header>
       </s.Group>
-      <EventCardCarousel>
-        {/* {!isEventsPending &&
-          (events?.map((event) => <EventCard key={event.id} event={event} />))} */}
+      {!isEventsPending && (<EventCardCarousel>
         {events?.map((event) => (
           <EventCard key={event.id} event={event} />
         ))}
-      </EventCardCarousel>
+      </EventCardCarousel>)}
       <RCalendar />
     </s.MainList>
   );

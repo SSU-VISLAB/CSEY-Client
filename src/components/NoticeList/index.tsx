@@ -1,18 +1,19 @@
 import { NoticeType } from "../../types";
 import * as s from "../../pages/NoticePage/styles";
 
+
+export function formatDate(dateString: string) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${year}/${month}/${day}`;
+}
 export const NoticeList = ({
   notice: { title, content, image, date, priority },
 }: {
   notice: NoticeType;
 }) => {
-  function formatDate(dateString: string) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
-    return `${year}/${month}/${day}`;
-  }
   return (
     <s.ContentGroup>
       <s.NoticeContent>

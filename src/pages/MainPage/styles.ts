@@ -131,6 +131,6 @@ export const {
 } = AlertCard;
 
 export const StyledLink = styled(Link)`
-  text-decoration: none; // 밑줄 제거
+  textDecoration: none; // 밑줄 제거
   color: inherit; // 링크 색상을 상속받아 변경하지 않음
 `;
