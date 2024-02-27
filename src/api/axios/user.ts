@@ -5,7 +5,7 @@ import { IUser } from "../../context/user";
 export type loginResponse = IUser;
 export function login(id: number, kakao_accessToken: string) {
   console.log('login called');
-  return axios.post('/api/login',
+  return axios.post('http://203.253.21.193:7070/api/login',
     {
       id,
       kakao_accessToken,
@@ -19,7 +19,7 @@ export function login(id: number, kakao_accessToken: string) {
 
 export const kakaoLogout = async (client: QueryClient, navigate: NavigateFunction) => {
   console.log('logout called');
-  return axios.post('/api/logout', {
+  return axios.post('http://203.253.21.193:7070/api/logout', {
     accessToken: JSON.parse(localStorage.getItem('info')).accessToken
   }).then(() => {
     localStorage.removeItem('info');
@@ -32,5 +32,5 @@ export const kakaoLogout = async (client: QueryClient, navigate: NavigateFunctio
 
 export const getUserInfo = async (id: number) => {
   console.log('getUserInfo called');
-  return axios.get(`/api/users/info/${id}`).then(res => res.data);
+  return axios.get(`http://203.253.21.193:7070/api/users/info/${id}`).then(res => res.data);
 }
