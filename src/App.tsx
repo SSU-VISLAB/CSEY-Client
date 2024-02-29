@@ -14,9 +14,9 @@ import { getEventByIdQuery } from "./api/query/event";
 
 function App() {
   const client = useQueryClient();
-  const loginInfo = JSON.parse(localStorage.getItem('info'));
-  if (loginInfo) {
-    client.setQueryData(['login'], loginInfo);
+  const info = localStorage.getItem('info')
+  if (info && info != 'undefined') {
+    client.setQueryData(['login'], JSON.parse(info));
     getUserInfoQuery();
   }
   console.log("APP rerender")

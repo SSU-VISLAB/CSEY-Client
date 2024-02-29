@@ -19,12 +19,12 @@ export const getUserInfoQuery = () => {
   const loginData = client.getQueryData<loginResponse>(['login']);
   const userInfo = useQuery({
     queryKey: ['userInfo'],
-    queryFn: () => getUserInfo(loginData.id),
+    queryFn: () => getUserInfo(loginData.user.id),
     enabled: !!loginData,
     staleTime: Infinity,
     select(data) {
       const { alarm, bookmark, eventLike, noticeLike, noticeRead } = data;
-      return new User(loginData, alarm, bookmark, noticeRead, noticeLike, eventLike);
+      return new User(loginData.user, alarm, bookmark, noticeRead, noticeLike, eventLike);
     }
   })
 

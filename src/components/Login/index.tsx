@@ -7,7 +7,7 @@ import { loginQuery } from "../../api/query/user";
 export const Login = memo(() => {
   const navigate = useNavigate();
   const [{ id, access_token }, setLoginData] = useState({ id: undefined, access_token: undefined });
-  const { isSuccess, data } = loginQuery(id, access_token);
+  const { data } = loginQuery(id, access_token);
 
   const onSuccess: Props['onSuccess'] = async ({ response, profile }) => {
     console.log('kakao login success', { response, profile });
@@ -17,11 +17,13 @@ export const Login = memo(() => {
   }
 
   useEffect(() => {
-    if (isSuccess) {
-      localStorage.setItem('info', JSON.stringify(data));
+    if (data) {
+      localStorage.setItem('info', JSON.stringify(data.user));
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
       navigate('/My', { replace: true });
     }
-  }, [isSuccess])
+  }, [data])
 
   return (
     <>

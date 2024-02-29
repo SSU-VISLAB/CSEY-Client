@@ -2,10 +2,14 @@ import { QueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { NavigateFunction } from "react-router";
 import { IUser } from "../../context/user";
-export type loginResponse = IUser;
+export type loginResponse = {
+  user: IUser;
+  accessToken: string;
+  refreshToken: string;
+}
 export function login(id: number, kakao_accessToken: string) {
   console.log('login called');
-  return axios.post('http://203.253.21.193:7070/api/login',
+  return axios.post('/login',
     {
       id,
       kakao_accessToken,
@@ -19,7 +23,7 @@ export function login(id: number, kakao_accessToken: string) {
 
 export const kakaoLogout = async (client: QueryClient, navigate: NavigateFunction) => {
   console.log('logout called');
-  return axios.post('http://203.253.21.193:7070/api/logout', {
+  return axios.post('/logout', {
     accessToken: JSON.parse(localStorage.getItem('info')).accessToken
   }).then(() => {
     localStorage.removeItem('info');
@@ -31,6 +35,6 @@ export const kakaoLogout = async (client: QueryClient, navigate: NavigateFunctio
 }
 
 export const getUserInfo = async (id: number) => {
-  console.log('getUserInfo called');
-  return axios.get(`http://203.253.21.193:7070/api/users/info/${id}`).then(res => res.data);
+  console.log('get UserInfo called');
+  return axios.get(`/users/info/${id}`).then(res => res.data);
 }
