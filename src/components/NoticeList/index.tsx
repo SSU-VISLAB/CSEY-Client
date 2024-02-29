@@ -2,12 +2,14 @@ import { NoticeType } from "../../types";
 import * as s from "../../pages/NoticePage/styles";
 
 
-export function formatDate(dateString: string) {
+export function formatDate(dateString: string, isTime: boolean) {
   const date = new Date(dateString);
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const day = date.getDate().toString().padStart(2, "0");
-  return `${year}/${month}/${day}`;
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  return isTime ? `${year}/${month}/${day}  ${hours}:${minutes}` : `${year}/${month}/${day}`;
 }
 export const NoticeList = ({
   notice: { title, content, image, date, priority },
@@ -27,7 +29,7 @@ export const NoticeList = ({
             </s.Line>
           )}
           <s.Line>
-            <s.Time>{formatDate(date)}</s.Time>
+            <s.Time>{formatDate(date, false)}</s.Time>
           </s.Line>
         </s.NoticeGroup>
         {priority == "일반" && image && (

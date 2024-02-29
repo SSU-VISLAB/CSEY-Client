@@ -4,30 +4,32 @@ import LikeIcon from "../../assets/Icons/LikeIcon.png";
 import HateIcon from "../../assets/Icons/HateIcon.png";
 import ShareIcon from "../../assets/Icons/ShareIcon.png";
 import CloseBtnSrc from "../../assets/Icons/modalCloseBtn.png"
-import { getEventByIdQuery } from "../../api/query/event";
 import tmpSrc from "../../assets/tmp/짱구.jpeg"
 import { formatDate } from "../NoticeList";
+import { getAlertByIdQuery } from "../../api/query/alert";
+import { getNoticeByIdQuery } from "../../api/query/notice";
 
-type EventModalProps = {
-  eventId: number, dday: number,
-  onClose: () => void
+type NoticeModalProps = {
+  queryId: number,
+  onClose?: () => void,
+  isAlert: boolean,  // true : alert, false : notice
 }
-const EventModal = React.forwardRef(({ eventId, dday, onClose }: EventModalProps, ref) => {
-  const { data, isPending } = getEventByIdQuery(eventId);
+const NoticeModal = React.forwardRef(({ queryId, onClose, isAlert }: NoticeModalProps, ref) => {
+  const { data, isPending } = isAlert ? getAlertByIdQuery(queryId) : getNoticeByIdQuery(queryId);
   if (isPending) return (<>"Loading"</>);
+  console.log({data});
   const {
     title,
     content,
+    date,
     image,
-    start,
-    end,
     like,
     dislike } = data;
   return (
     <s.Wrapper>
       <s.CloseBtn src={CloseBtnSrc} onClick={onClose}/>
       <s.Container>
-        <s.Title>{title}</s.Title>
+        <s.Title isAlert = {isAlert}>{title}</s.Title>
         <s.ImgContainer src={tmpSrc} />
         {/* <s.ImgContainer src={`http://localhost:3000/events/${image}`} /> */}
         <s.IconContainer>
@@ -42,16 +44,15 @@ const EventModal = React.forwardRef(({ eventId, dday, onClose }: EventModalProps
         </s.IconContainer>
 
         <s.DateContainer>
-          <s.Dday>{dday < 1 ? "D-day" : `D-${dday}`}</s.Dday>
           <s.Duration>
-            {formatDate(start, false)} ~ {formatDate(end, false)}
+            {formatDate(date, true)}
           </s.Duration>
         </s.DateContainer>
 
-        <s.ContentsWrapper dangerouslySetInnerHTML={{ __html: content }}/>
+        <s.ContentsWrapper isAlert={isAlert} dangerouslySetInnerHTML={{ __html: content }}/>
       </s.Container>
     </s.Wrapper>
   );
 });
 
-export default EventModal;
+export default NoticeModal;

@@ -19,6 +19,7 @@ export const getAlertByIdQuery = (targetId) => {
         refetchInterval: 5000,
         refetchIntervalInBackground: true,
     });
+    console.log({alert});
 
     return alertByIdQuery;
 }
