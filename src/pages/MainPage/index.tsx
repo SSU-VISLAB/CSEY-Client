@@ -13,7 +13,6 @@ const MainPage = () => {
   console.log({ events });
   return (
     <s.MainList>
-      <HeaderLogo />
       <AlertBanner isAlertsPending={isAlertsPending} alerts={alerts}/>
       {!isEventsPending && (<EventCardCarousel>
         {events?.map((event) => (

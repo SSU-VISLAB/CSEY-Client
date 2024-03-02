@@ -6,7 +6,7 @@ import ShareIcon from "../../assets/Icons/ShareIcon.png";
 import CloseBtnSrc from "../../assets/Icons/modalCloseBtn.png"
 import { getEventByIdQuery } from "../../api/query/event";
 import tmpSrc from "../../assets/tmp/짱구.jpeg"
-import { formatDate } from "../NoticeList";
+import { formatDate } from "../PaperList/NoticeList";
 
 type EventModalProps = {
   eventId: number, dday: number,

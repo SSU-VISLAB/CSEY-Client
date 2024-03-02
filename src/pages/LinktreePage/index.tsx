@@ -34,7 +34,6 @@ const LinkData = [
 const LinktreePage = () => {
   return (
     <s.AlertList>
-      <HeaderLogo />
       <s.Banner src={testSrc} alt="testSrc"/>
       <s.Group elevation={4}>
         <s.Header>

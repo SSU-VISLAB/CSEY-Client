@@ -11,6 +11,7 @@ import TerracePage from "./pages/TerracePage";
 import { getNoticeByIdQuery, getNoticesQuery } from "./api/query/notice";
 import { getEventById } from "./api/axios/event";
 import { getEventByIdQuery } from "./api/query/event";
+import HeaderLogo from "./components/HeaderLogo";
 
 function App() {
   const client = useQueryClient();
@@ -25,6 +26,7 @@ function App() {
   // console.log(getEventByIdQuery(30));
   return (
     <Div>
+      <HeaderLogo />
       <Routes>
         <Route path="Terrace" element={<TerracePage />} />
         <Route path="Notification" element={<NoticePage />} />
